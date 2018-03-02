@@ -24,7 +24,8 @@ export default class RegisterForm extends React.Component {
             passwordCnfErrMessage: '',
             emailErrMessage: '',
             phoneNumberErrmessage: '',
-            isEmailFormatIncorrect: false
+            isEmailFormatIncorrect: false,
+            isUserNameFormatIncorrect: false
 
         };
     }
@@ -42,22 +43,46 @@ export default class RegisterForm extends React.Component {
             });
         }
     };
-    checkEmailFormat = (event)=>{
+    checkEmailFormat = (event) => {
         this.ValidateEmailFormat(this.state.email);
     }
     ValidateEmailAvailable(email) {
         //TODO check with server if Email is already been used.
     }
+    ValidateUserNameFormat = (event) => {
+        if (this.state.userName.length < 3 || this.state.userName.length > 21) {
+            this.setState({
+                isUserNameFormatIncorrect: true,
+                userNameErrMessage: 'User Name must be shorter than 20 charactors and longer than 2 charactors'
+            });
+        }else{
+            this.setState({
+                isUserNameFormatIncorrect: false,
+                userNameErrMessage: ''
+            });
+        }
+    };
 
     handleUserNameChange = (event) => {
         this.setState({
             userName: event.target.value,
-            userNameErrMessage: ''
         });
-        if (event.target.value.length > 20) {
-            this.setState({
-                userNameErrMessage: 'User Name must be shorter than 20 charactors'
-            });
+
+        if (this.state.isUserNameFormatIncorrect) {
+
+            if (event.target.value.length < 21 && event.target.value.length > 2) {
+                this.setState({
+                    userNameErrMessage: '',
+                    isUserNameFormatIncorrect: false
+                });
+            }
+        }else{
+            if (event.target.value.length > 21) {
+                this.setState({
+                    userNameErrMessage: 'User Name must be shorter than 20 charactors and longer than 2 charactors',
+                    isUserNameFormatIncorrect: true
+                });
+            }
         }
     };
 
@@ -120,14 +145,16 @@ export default class RegisterForm extends React.Component {
                 <TextField
                     hintText="User Name"
                     floatingLabelText="User Name"
+                    onChange={this.handleUserNameChange}
                     errorText={this.state.userNameErrMessage}
-                    onFocus={this.checkEmailFormat}
+                    onBlur={this.ValidateUserNameFormat}
                 /><br />
                 <TextField
                     hintText="Email"
                     floatingLabelText="Email"
                     errorText={this.state.emailErrMessage}
                     onChange={this.handleEmailChange}
+                    onBlur={this.checkEmailFormat}
                 /><br />
                 <TextField
                     hintText="Phone Number"
