@@ -8,7 +8,7 @@ const styles = {
     }
 };
 
-export default class Login extends React.Component {
+export default class LoginForm extends React.Component {
     constructor(props) {
         super(props);
 
