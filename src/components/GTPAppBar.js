@@ -5,6 +5,7 @@ import FlatButton from 'material-ui/FlatButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
+import { Link } from 'react-router-dom';
 
 const styles = {
     title: {
@@ -12,6 +13,10 @@ const styles = {
     },
     IconMenu: {
         margin: '0 20px 10px 0'
+    },
+    link:{
+        link: 'text-decoration: none',
+        color: 'white'
     }
 };
 
@@ -22,8 +27,8 @@ class Login extends Component {
     render() {
         return (
             <div>
-                <FlatButton {...this.props} label="Login" onClick={() => { alert('Login') }}/>
-                <FlatButton {...this.props} label="Register" onClick={() => { alert('Register') }}/>
+                <Link to="/login"><FlatButton {...this.props} label="Login" /></Link>
+                <Link to="/register"><FlatButton {...this.props} label="Register" /></Link>
             </div>
         );
     }
@@ -43,10 +48,10 @@ const Logged = (props) => (
         anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
         style={styles.IconMenu}
     >
-        <MenuItem primaryText="My Account"
-            onClick={() => { alert('My Account') }} />
-        <MenuItem primaryText="Help"
-            onClick={() => { alert('Help') }} />
+        <Link to="/myaccount"> <MenuItem primaryText="My Account"
+            onClick={() => { alert('My Account') }} /></Link>
+        <Link to="/help"><MenuItem primaryText="Help"
+            onClick={() => { alert('Help') }} /></Link>
         <MenuItem primaryText="Sign out"
             onClick={() => { alert('Sign out') }} />
     </IconMenu>
@@ -63,11 +68,11 @@ class GTPAppBar extends Component {
         return (
             <AppBar
                 className="appbar"
-                title={<span style={styles.title}>Group Travel Planner</span>}
+                title={<span style={styles.title}><Link to="/" style={styles.link}>Group Travel Planner</Link></span>}
                 iconClassNameRight="muidocs-icon-navigation-expand-more"
-                onTitleClick={()=>{alert('you clicked title')}}
                 onLeftIconButtonClick={this.props.toggleDrawer}
                 iconElementRight={this.props.logged ? <Logged /> : <Login />}
+                
             />
         );
     }
