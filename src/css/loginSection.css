@@ -1,0 +1,15 @@
+.loginSection {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.loginForm{
+    margin: 10px;
+}
+
+.image{
+    margin: 30px;
+    width: 350px;
+    height: 350px;
+}
