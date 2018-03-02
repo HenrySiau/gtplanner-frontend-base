@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import '../css/App.css';
 import GTPAppBar from './GTPAppBar';
 import GTPDrawer from './GTPDrawer';
+import Login from './Login';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 class App extends Component {
     constructor(props) {
@@ -23,22 +24,27 @@ class App extends Component {
 
     render() {
         return (
-            <div className="container">
-                <MuiThemeProvider>
+            <MuiThemeProvider>
+                <div className="container">
+
                     <GTPAppBar
                         toggleDrawer={this.toggleDrawer}
                         logged={this.state.logged}
                     />
-                </MuiThemeProvider >
+                    <GTPDrawer
+                        isDrawerOpen={this.state.isDrawerOpen}
+                        toggleDrawer={this.toggleDrawer}
+                        setDrawerState={this.setDrawerState}
+                    />
 
-                 <MuiThemeProvider>
-                        <GTPDrawer
-                            isDrawerOpen={this.state.isDrawerOpen}
-                            toggleDrawer={this.toggleDrawer}
-                            setDrawerState={this.setDrawerState}
-                        />
-                    </MuiThemeProvider>
-            </div>
+                    <div className="mainSection">
+                        <div className="loginSection">
+                            <Login />
+                        </div>
+                    </div>
+
+                </div>
+            </MuiThemeProvider>
         );
     }
 }
