@@ -67,7 +67,6 @@ class GTPAppBar extends Component {
             <AppBar
                 className="appbar"
                 title={<span style={styles.title}><Link to="/" style={styles.link}>Group Travel Planner</Link></span>}
-                iconClassNameRight="muidocs-icon-navigation-expand-more"
                 onLeftIconButtonClick={this.props.toggleDrawer}
                 iconElementRight={this.props.logged ? <Logged /> : <Login />}
                 
