@@ -22,13 +22,13 @@ const styles = {
 
 
 class Login extends Component {
-    static muiName = 'FlatButton';
+    // static muiName = 'FlatButton';
 
     render() {
         return (
             <div>
-                <Link to="/login"><FlatButton {...this.props} label="Login" /></Link>
-                <Link to="/register"><FlatButton {...this.props} label="Register" /></Link>
+                <Link to="/login" ><FlatButton {...this.props} label="Login" style={styles.link}/></Link>
+                <Link to="/register"><FlatButton {...this.props} label="Register" style={styles.link}/></Link>
             </div>
         );
     }
@@ -48,15 +48,13 @@ const Logged = (props) => (
         anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
         style={styles.IconMenu}
     >
-        <Link to="/myaccount"> <MenuItem primaryText="My Account"
-            onClick={() => { alert('My Account') }} /></Link>
-        <Link to="/help"><MenuItem primaryText="Help"
-            onClick={() => { alert('Help') }} /></Link>
+        <Link to="/myaccount"> <MenuItem primaryText="My Account"/></Link>
+        <Link to="/help"><MenuItem primaryText="Help"/></Link>
         <MenuItem primaryText="Sign out"
             onClick={() => { alert('Sign out') }} />
     </IconMenu>
 );
-Logged.muiName = 'IconMenu';
+// Logged.muiName = 'IconMenu';
 
 
 class GTPAppBar extends Component {

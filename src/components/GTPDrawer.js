@@ -9,7 +9,7 @@ const styles = {
     }
 };
 
-const MyAwesomeReactComponent = (props) => (
+const GTPDrawer = (props) => (
   <Drawer
     width={200}
     docked={false}
@@ -27,4 +27,4 @@ const MyAwesomeReactComponent = (props) => (
   </Drawer>
 );
 
-export default MyAwesomeReactComponent;
+export default GTPDrawer;

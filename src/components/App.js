@@ -3,8 +3,9 @@ import logo from './logo.svg';
 import '../css/App.css';
 import GTPAppBar from './GTPAppBar';
 import GTPDrawer from './GTPDrawer';
-import Login from './Login';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import MainSection from '../sections/MainSection';
+import LoginSection from '../sections/LoginSection'
 import {
     BrowserRouter as Router,
     Route,
@@ -12,17 +13,6 @@ import {
     Switch
 } from 'react-router-dom';
 
-const Home = () => (
-    <div>
-        <h1>To be fill with Chat room and other tools</h1>
-    </div>
-);
-
-const LoginSection = () => (
-    <div className="loginSection">
-        <Login />
-    </div>
-);
 
 const RegisterSection = () => (
     <div>
@@ -64,12 +54,9 @@ class App extends Component {
                         />
 
                         <div className="mainSection">
-
-                            {/* <Route path="/login" component={LoginSection} /> */}
-                            <Route exact path="/" component={Home} />
+                            <Route exact path="/" component={MainSection} />
                             <Route exact path="/login" component={LoginSection} />
                         </div>
-
                     </div>
                 </MuiThemeProvider>
             </Router>
