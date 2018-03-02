@@ -19,6 +19,7 @@ export default class LoginForm extends React.Component {
     }
 
     handleEmailChange = (event) => {
+        
         this.setState({
             email: event.target.value
         });

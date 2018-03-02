@@ -6,19 +6,13 @@ import GTPDrawer from './GTPDrawer';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import MainSection from '../sections/MainSection';
 import LoginSection from '../sections/LoginSection'
+import RegisterSection from '../sections/RegisterSection'
 import {
     BrowserRouter as Router,
     Route,
     Link,
     Switch
 } from 'react-router-dom';
-
-
-const RegisterSection = () => (
-    <div>
-        <h1>Register</h1>
-    </div>
-);
 
 class App extends Component {
     constructor(props) {
@@ -56,6 +50,7 @@ class App extends Component {
                         <div className="mainSection">
                             <Route exact path="/" component={MainSection} />
                             <Route exact path="/login" component={LoginSection} />
+                            <Route exact path="/register" component={RegisterSection} />
                         </div>
                     </div>
                 </MuiThemeProvider>
