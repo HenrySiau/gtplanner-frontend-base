@@ -12,6 +12,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { orange500, red500, blue500, lightBlue300 } from 'material-ui/styles/colors';
 import Paper from 'material-ui/Paper';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
+import axios from 'axios';
+import settings from '../config';
 
 const styles = {
     psdCnfErrStyle: {
@@ -50,10 +52,10 @@ export default class RegisterForm extends React.Component {
             email: '',
             phoneNumber: '',
             password: '',
-            confirmPassword: '',
+            passwordConfirm: '',
             userNameErrMessage: '',
             passwordErrMessage: '',
-            passwordCnfErrMessage: '',
+            passwordCnfirmErrMessage: '',
             emailErrMessage: '',
             phoneNumberErrmessage: '',
             isEmailFormatIncorrect: false,
@@ -144,7 +146,7 @@ export default class RegisterForm extends React.Component {
         }
     };
     validatePassword = () => {
-        if (this.state.isPasswordContainaCapital && this.state.isPasswordContainaLowercase && 
+        if (this.state.isPasswordContainaCapital && this.state.isPasswordContainaLowercase &&
             this.state.isPasswordContainaNumber && this.state.isPasswordSatisfyLengthRequirement) {
             this.setState({
                 isPopoverOpen: false
@@ -180,19 +182,19 @@ export default class RegisterForm extends React.Component {
         // validate capital letter
         if (event.target.value.match(/[A-Z]/g)) {
             this.setState(
-                {isPasswordContainaCapital: true},
+                { isPasswordContainaCapital: true },
                 () => this.validatePassword()
             );
         } else {
             this.setState(
-                {isPasswordContainaCapital: false},
+                { isPasswordContainaCapital: false },
                 () => this.validatePassword()
             );
         }
         // validate number
         if (event.target.value.match(/[0-9]/g)) {
             this.setState(
-                {isPasswordContainaNumber: true},
+                { isPasswordContainaNumber: true },
                 () => this.validatePassword()
             );
         } else {
@@ -203,7 +205,7 @@ export default class RegisterForm extends React.Component {
         //validate length
         if (event.target.value.length > 7 && event.target.value.length < 31) {
             this.setState(
-                {isPasswordSatisfyLengthRequirement: true},
+                { isPasswordSatisfyLengthRequirement: true },
                 () => this.validatePassword()
             );
         } else {
@@ -228,22 +230,42 @@ export default class RegisterForm extends React.Component {
         });
     }
 
-    handleCnfPasswordChange = (event) => {
+    handlePasswordConfirmChange = (event) => {
 
         if (event.target.value != this.state.password) {
             this.setState({
-                passwordCnfErrMessage: `password doesn't match`
+                passwordCnfirmErrMessage: `password doesn't match`
             });
         } else {
             this.setState({
-                confirmPassword: event.target.value,
-                passwordCnfErrMessage: ''
+                passwordConfirm: event.target.value,
+                passwordCnfirmErrMessage: ''
             });
         }
     };
 
-    handleRegister = () => {
-        this.ValidateEmailFormat(this.state.email)
+    handleSubmit = () => {
+        // Use updater function to make sure get the newest state
+        this.setState((preState) => {
+
+            axios.post(settings.serverUrl + '/api/post/register', {
+                userName: preState.userName,
+                email: preState.email,
+                phoneNumber: preState.phoneNumber,
+                password: preState.password,
+                passwordConfirm: preState.passwordConfirm
+
+
+            })
+                .then(function (response) {
+                    // TODO: Redirect to create my first trip
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    // TODO: show error message and guide user to re submit
+                    console.log(error);
+                });
+        });
 
     }
 
@@ -307,14 +329,14 @@ export default class RegisterForm extends React.Component {
                     hintText="Confirm Password"
                     floatingLabelText="Confirm Password"
                     type="password"
-                    errorText={this.state.passwordCnfErrMessage}
+                    errorText={this.state.passwordCnfirmErrMessage}
                     errorStyle={styles.psdCnfErrStyle}
-                    onChange={this.handleCnfPasswordChange}
+                    onChange={this.handlePasswordConfirmChange}
                 /><br />
                 <RaisedButton
                     label="Register"
                     primary={true}
-                    onClick={this.handleRegister}
+                    onClick={this.handleSubmit}
                     style={styles.loginButton} />
             </div>
         );
