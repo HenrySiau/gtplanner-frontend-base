@@ -3,15 +3,15 @@ Formate required:
  • userName: 3-20 characters
  • email: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
  • phoneNumber: less than 20 characters
- • password: 
+ • password: 8-30 characters, must contain a lowercase letter, a capital letter and a number
 
 */
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import { orange500 } from 'material-ui/styles/colors';
+import { orange500, red500, blue500, lightBlue300 } from 'material-ui/styles/colors';
 import Paper from 'material-ui/Paper';
-import Popover from 'material-ui/Popover';
+import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 
 const styles = {
     psdCnfErrStyle: {
@@ -22,7 +22,22 @@ const styles = {
     },
     loginButton: {
         margin: '10px',
-    }
+    },
+    valid: {
+        color: blue500
+    },
+    invalid: {
+        color: red500
+    },
+    popoverTitle: {
+        color: blue500,
+        margin: 10
+    },
+    popoverHint: {
+        color: lightBlue300,
+        margin: 10,
+        fontSize: '80%'
+    },
 
 };
 
@@ -44,25 +59,12 @@ export default class RegisterForm extends React.Component {
             isEmailFormatIncorrect: false,
             isUserNameFormatIncorrect: false,
             isPopoverOpen: false,
-
-
+            isPasswordContainaLowercase: false,
+            isPasswordContainaCapital: false,
+            isPasswordContainaNumber: false,
+            isPasswordSatisfyLengthRequirement: false,
         };
     }
-    // styles = {
-    //     psdCnfErrStyle: {
-    //         color: orange500,
-    //     },
-    //     popover: {
-    //         height: '100px',
-    //         width: '270px',
-    //         textAlign: 'center',
-    //         display: 'flex',
-    //     },
-    //     loginButton: {
-    //         margin: '10px',
-    //     }
-
-    // };
 
     paperStyle = () => {
         return ({
@@ -87,12 +89,15 @@ export default class RegisterForm extends React.Component {
             });
         }
     };
+
     checkEmailFormat = (event) => {
         this.ValidateEmailFormat(this.state.email);
     }
+
     ValidateEmailAvailable(email) {
         //TODO check with server if Email is already been used.
     }
+
     ValidateUserNameFormat = (event) => {
         if (this.state.userName.length < 3 || this.state.userName.length > 21) {
             this.setState({
@@ -138,7 +143,14 @@ export default class RegisterForm extends React.Component {
             this.ValidateEmailFormat(event.target.value);
         }
     };
-
+    validatePassword = () => {
+        if (this.state.isPasswordContainaCapital && this.state.isPasswordContainaLowercase && 
+            this.state.isPasswordContainaNumber && this.state.isPasswordSatisfyLengthRequirement) {
+            this.setState({
+                isPopoverOpen: false
+            });
+        }
+    }
     handlePhoneNumberChange = (event) => {
         // validate phone number could be a big project
         // because different county have different phone number patten
@@ -153,16 +165,65 @@ export default class RegisterForm extends React.Component {
         this.setState({
             password: event.target.value
         });
+
+        // validate lowercase
+        if (event.target.value.match(/[a-z]/g)) {
+            this.setState(
+                { isPasswordContainaLowercase: true },
+                () => this.validatePassword()
+            );
+        } else {
+            this.setState({
+                isPasswordContainaLowercase: false
+            });
+        }
+        // validate capital letter
+        if (event.target.value.match(/[A-Z]/g)) {
+            this.setState(
+                {isPasswordContainaCapital: true},
+                () => this.validatePassword()
+            );
+        } else {
+            this.setState(
+                {isPasswordContainaCapital: false},
+                () => this.validatePassword()
+            );
+        }
+        // validate number
+        if (event.target.value.match(/[0-9]/g)) {
+            this.setState(
+                {isPasswordContainaNumber: true},
+                () => this.validatePassword()
+            );
+        } else {
+            this.setState({
+                isPasswordContainaNumber: false
+            });
+        }
+        //validate length
+        if (event.target.value.length > 7 && event.target.value.length < 31) {
+            this.setState(
+                {isPasswordSatisfyLengthRequirement: true},
+                () => this.validatePassword()
+            );
+        } else {
+            this.setState({
+                isPasswordSatisfyLengthRequirement: false
+            });
+        }
+        // console.log(this.state.isPasswordContainaCapital + this.state.isPasswordContainaLowercase + this.state.isPasswordContainaNumber + this.state.isPasswordSatisfyLengthRequirement);
+
     };
+
     showPasswordRequirements = (event) => {
         this.setState({
             isPopoverOpen: true,
             anchorEl: event.currentTarget
         });
     }
+
     closePasswordRequirements = (event) => {
         this.setState({
-            passwordErrMessage: "",
             isPopoverOpen: false
         });
     }
@@ -180,9 +241,6 @@ export default class RegisterForm extends React.Component {
             });
         }
     };
-
-
-
 
     handleRegister = () => {
         this.ValidateEmailFormat(this.state.email)
@@ -224,18 +282,26 @@ export default class RegisterForm extends React.Component {
                     onBlur={this.closePasswordRequirements}
                 /><br />
                 <Popover
-                    style={styles.popover} 
+                    style={styles.popover}
                     open={this.state.isPopoverOpen}
                     anchorEl={this.state.anchorEl}
                     anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
                     targetOrigin={{ horizontal: 'middle', vertical: 'top' }}
-                    onRequestClose={this.handleRequestClose}
+                    animation={PopoverAnimationVertical}
+                    onRequestClose={this.closePasswordRequirements}
                 >
+                    <p style={styles.popoverTitle}>Password must contain:</p>
                     <ul>
-                        <li>one</li>
-                        <li>two</li>
-                        <li>three</li>
+                        <li style={this.state.isPasswordContainaLowercase ? styles.valid : styles.invalid}>
+                            a lowercase letter</li>
+                        <li style={this.state.isPasswordContainaCapital ? styles.valid : styles.invalid}>
+                            a CAPITAL letter</li>
+                        <li style={this.state.isPasswordContainaNumber ? styles.valid : styles.invalid}>
+                            a number</li>
+                        <li style={this.state.isPasswordSatisfyLengthRequirement ? styles.valid : styles.invalid}>
+                            8 to 30 characters</li>
                     </ul>
+                    <p style={styles.popoverHint}>Click anywhere to close this window</p>
                 </Popover>
                 <TextField
                     hintText="Confirm Password"
