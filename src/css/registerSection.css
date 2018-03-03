@@ -4,6 +4,7 @@
     justify-content: center;
     align-items: center;
 }
+
 .registerSection {
     display: flex;
     flex-direction: row;
@@ -11,22 +12,27 @@
     align-items: center;
     flex-wrap: wrap;
 }
-.registerForm{
+
+.registerForm {
     margin: 10px;
 }
 
-.image{
+.image {
     margin: 30px;
     width: 350px;
     height: 350px;
 }
 
-.title{
+.title {
     color: rgb(141, 141, 141);
     margin-top: 30px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: normal;
-    
+}
 
-
+.paper {
+    height: 100px;
+    width: 100px;
+    text-align: 'center';
+    display: 'inline-block';
 }

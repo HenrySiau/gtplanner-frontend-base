@@ -1,12 +1,29 @@
+/*
+Formate required:
+ • userName: 3-20 characters
+ • email: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+ • phoneNumber: less than 20 characters
+ • password: 
+
+*/
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import { orange500 } from 'material-ui/styles/colors';
+import Paper from 'material-ui/Paper';
+import Popover from 'material-ui/Popover';
 
 const styles = {
     psdCnfErrStyle: {
         color: orange500,
+    },
+    popover: {
+        width: 270
+    },
+    loginButton: {
+        margin: '10px',
     }
+
 };
 
 export default class RegisterForm extends React.Component {
@@ -25,9 +42,36 @@ export default class RegisterForm extends React.Component {
             emailErrMessage: '',
             phoneNumberErrmessage: '',
             isEmailFormatIncorrect: false,
-            isUserNameFormatIncorrect: false
+            isUserNameFormatIncorrect: false,
+            isPopoverOpen: false,
+
 
         };
+    }
+    // styles = {
+    //     psdCnfErrStyle: {
+    //         color: orange500,
+    //     },
+    //     popover: {
+    //         height: '100px',
+    //         width: '270px',
+    //         textAlign: 'center',
+    //         display: 'flex',
+    //     },
+    //     loginButton: {
+    //         margin: '10px',
+    //     }
+
+    // };
+
+    paperStyle = () => {
+        return ({
+            height: 100,
+            width: 270,
+            margin: 20,
+            textAlign: 'center',
+            display: 'flex',
+        });
     }
 
     ValidateEmailFormat(email) {
@@ -55,7 +99,7 @@ export default class RegisterForm extends React.Component {
                 isUserNameFormatIncorrect: true,
                 userNameErrMessage: 'User Name must be shorter than 20 charactors and longer than 2 charactors'
             });
-        }else{
+        } else {
             this.setState({
                 isUserNameFormatIncorrect: false,
                 userNameErrMessage: ''
@@ -76,7 +120,7 @@ export default class RegisterForm extends React.Component {
                     isUserNameFormatIncorrect: false
                 });
             }
-        }else{
+        } else {
             if (event.target.value.length > 21) {
                 this.setState({
                     userNameErrMessage: 'User Name must be shorter than 20 charactors and longer than 2 charactors',
@@ -107,13 +151,19 @@ export default class RegisterForm extends React.Component {
 
     handlePasswordChange = (event) => {
         this.setState({
-            password: event.target.value,
-            passwordErrMessage: "Password must..."
+            password: event.target.value
         });
     };
-    showPasswordRequirements = () => {
+    showPasswordRequirements = (event) => {
         this.setState({
-            passwordErrMessage: "Password must..."
+            isPopoverOpen: true,
+            anchorEl: event.currentTarget
+        });
+    }
+    closePasswordRequirements = (event) => {
+        this.setState({
+            passwordErrMessage: "",
+            isPopoverOpen: false
         });
     }
 
@@ -171,7 +221,22 @@ export default class RegisterForm extends React.Component {
                     errorText={this.state.passwordErrMessage}
                     onChange={this.handlePasswordChange}
                     onFocus={this.showPasswordRequirements}
+                    onBlur={this.closePasswordRequirements}
                 /><br />
+                <Popover
+                    style={styles.popover} 
+                    open={this.state.isPopoverOpen}
+                    anchorEl={this.state.anchorEl}
+                    anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
+                    targetOrigin={{ horizontal: 'middle', vertical: 'top' }}
+                    onRequestClose={this.handleRequestClose}
+                >
+                    <ul>
+                        <li>one</li>
+                        <li>two</li>
+                        <li>three</li>
+                    </ul>
+                </Popover>
                 <TextField
                     hintText="Confirm Password"
                     floatingLabelText="Confirm Password"
@@ -181,7 +246,7 @@ export default class RegisterForm extends React.Component {
                     onChange={this.handleCnfPasswordChange}
                 /><br />
                 <RaisedButton
-                    label="Login"
+                    label="Register"
                     primary={true}
                     onClick={this.handleRegister}
                     style={styles.loginButton} />
