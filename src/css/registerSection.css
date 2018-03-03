@@ -30,9 +30,9 @@
     font-weight: normal;
 }
 
-.paper {
-    height: 100px;
-    width: 100px;
-    text-align: 'center';
-    display: 'inline-block';
+.infoSection{
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -21,7 +21,7 @@ const styles = {
         width: 270
     },
     loginButton: {
-        margin: '10px',
+        margin: '10px 10px 5px 90px'
     },
     valid: {
         color: blue500
