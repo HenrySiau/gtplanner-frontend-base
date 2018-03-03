@@ -1,6 +1,8 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import axios from 'axios';
+import settings from '../config';
 
 const styles = {
     loginButton: {
@@ -29,8 +31,22 @@ export default class LoginForm extends React.Component {
             password: event.target.value
         });
     };
-    handleLogin = () => {
-        alert(this.state.email + this.state.password);
+    handleSubmit = () => {
+                // Use updater function to make sure get the newest state
+                this.setState((preState) => {
+                    axios.post(settings.serverUrl + '/api/post/signin', {
+                        email: preState.email,
+                        password: preState.password
+                    })
+                        .then(function (response) {
+                            // TODO: Redirect to create my first trip
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            // TODO: show error message and guide user to re submit
+                            console.log(error);
+                        });
+                });
     }
 
     render() {
@@ -52,7 +68,7 @@ export default class LoginForm extends React.Component {
                 <RaisedButton
                     label="Login"
                     primary={true}
-                    onClick={this.handleLogin}
+                    onClick={this.handleSubmit}
                     style={styles.loginButton} />
             </div>
         );
