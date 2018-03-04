@@ -10,7 +10,6 @@ import React from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import { orange500, red500, blue500, lightBlue300 } from 'material-ui/styles/colors';
-import Paper from 'material-ui/Paper';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import axios from 'axios';
 import settings from '../config';
@@ -232,7 +231,7 @@ export default class RegisterForm extends React.Component {
 
     handlePasswordConfirmChange = (event) => {
 
-        if (event.target.value != this.state.password) {
+        if (event.target.value !== this.state.password) {
             this.setState({
                 passwordCnfirmErrMessage: `password doesn't match`
             });
@@ -291,8 +290,6 @@ export default class RegisterForm extends React.Component {
                     floatingLabelText="Phone Number"
                     errorText={this.state.phoneNumberErrmessage}
                     onChange={this.handlePhoneNumberChange}
-                    onChange={this.handleUserNameChange}
-
                 /><br />
                 <TextField
                     hintText="Password"

@@ -22,14 +22,11 @@ const styles = {
 
 
 class Login extends Component {
-    constructor(props) {
-        super(props);
-    }
     render() {
         return (
             <div>
-                <Link to="/login" ><FlatButton {...this.props} label="Login" style={styles.link} /></Link>
-                <Link to="/register"><FlatButton {...this.props} label="Register" style={styles.link} /></Link>
+                <Link to="/login" ><FlatButton  label="Login" style={styles.link} /></Link>
+                <Link to="/register"><FlatButton label="Register" style={styles.link} /></Link>
             </div>
         );
     }
@@ -61,10 +58,6 @@ const Logged = (props) => (
 
 
 class GTPAppBar extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <AppBar
