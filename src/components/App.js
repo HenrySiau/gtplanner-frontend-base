@@ -9,9 +9,7 @@ import LoginSection from '../sections/LoginSection'
 import RegisterSection from '../sections/RegisterSection'
 import {
     BrowserRouter as Router,
-    Route,
-    Link,
-    Switch
+    Route
 } from 'react-router-dom';
 
 class App extends Component {
@@ -19,8 +17,10 @@ class App extends Component {
         super(props);
         this.state = {
             isDrawerOpen: false,
-            logged: false
+            isLogged: localStorage.getItem('id_token') ? true : false
         };
+        this.toggleLogout = this.toggleLogout.bind(this);
+        this.toggleDrawer = this.toggleDrawer.bind(this);
     }
 
     toggleDrawer = () => {
@@ -30,6 +30,10 @@ class App extends Component {
     setDrawerState = (open) => {
         this.setState({ isDrawerOpen: open });
     };
+    
+    toggleLogout = ()=>{
+        this.setState({isLogged: false})
+    }
 
     render() {
         return (
@@ -39,7 +43,8 @@ class App extends Component {
 
                         <GTPAppBar
                             toggleDrawer={this.toggleDrawer}
-                            logged={this.state.logged}
+                            isLogged={this.state.isLogged}
+                            toggleLogout={this.toggleLogout}
                         />
                         <GTPDrawer
                             isDrawerOpen={this.state.isDrawerOpen}

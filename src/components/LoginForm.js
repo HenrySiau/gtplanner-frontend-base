@@ -40,7 +40,9 @@ export default class LoginForm extends React.Component {
                     })
                         .then(function (response) {
                             // TODO: Redirect to create my first trip
-                            console.log(response);
+                            if(response.data.token){
+                                localStorage.setItem('id_token', response.data.token);
+                            }
                         })
                         .catch(function (error) {
                             // TODO: show error message and guide user to re submit
@@ -48,6 +50,7 @@ export default class LoginForm extends React.Component {
                         });
                 });
     }
+    
 
     render() {
         return (

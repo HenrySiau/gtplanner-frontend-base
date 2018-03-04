@@ -14,7 +14,7 @@ const styles = {
     IconMenu: {
         margin: '0 20px 10px 0'
     },
-    link:{
+    link: {
         link: 'text-decoration: none',
         color: 'white'
     }
@@ -22,13 +22,14 @@ const styles = {
 
 
 class Login extends Component {
-    // static muiName = 'FlatButton';
-
+    constructor(props) {
+        super(props);
+    }
     render() {
         return (
             <div>
-                <Link to="/login" ><FlatButton {...this.props} label="Login" style={styles.link}/></Link>
-                <Link to="/register"><FlatButton {...this.props} label="Register" style={styles.link}/></Link>
+                <Link to="/login" ><FlatButton {...this.props} label="Login" style={styles.link} /></Link>
+                <Link to="/register"><FlatButton {...this.props} label="Register" style={styles.link} /></Link>
             </div>
         );
     }
@@ -48,13 +49,15 @@ const Logged = (props) => (
         anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
         style={styles.IconMenu}
     >
-        <Link to="/myaccount"> <MenuItem primaryText="My Account"/></Link>
-        <Link to="/help"><MenuItem primaryText="Help"/></Link>
+        <Link to="/myaccount"> <MenuItem primaryText="My Account" /></Link>
+        <Link to="/help"><MenuItem primaryText="Help" /></Link>
         <MenuItem primaryText="Sign out"
-            onClick={() => { alert('Sign out') }} />
+            onClick={() => {
+                localStorage.removeItem('id_token');
+                props.toggleLogout();
+            }} />
     </IconMenu>
 );
-// Logged.muiName = 'IconMenu';
 
 
 class GTPAppBar extends Component {
@@ -68,8 +71,8 @@ class GTPAppBar extends Component {
                 className="appbar"
                 title={<span style={styles.title}><Link to="/" style={styles.link}>Group Travel Planner</Link></span>}
                 onLeftIconButtonClick={this.props.toggleDrawer}
-                iconElementRight={this.props.logged ? <Logged /> : <Login />}
-                
+                iconElementRight={this.props.isLogged ? <Logged toggleLogout={this.props.toggleLogout}/> : <Login />}
+
             />
         );
     }
