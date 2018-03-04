@@ -33,9 +33,7 @@ class Login extends Component {
 }
 
 const Logged = (props) => (
-
     <IconMenu
-        {...props}
         iconButtonElement={
             <IconButton><Avatar
                 src="images/user.png"
