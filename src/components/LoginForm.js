@@ -20,6 +20,9 @@ export default class LoginForm extends React.Component {
         };
     }
 
+    
+    // toggleLogin = this.props.toggleLogin;
+
     handleEmailChange = (event) => {
         
         this.setState({
@@ -33,6 +36,7 @@ export default class LoginForm extends React.Component {
     };
     handleSubmit = () => {
                 // Use updater function to make sure get the newest state
+                const toggleLogin = this.props.toggleLogin;
                 this.setState((preState) => {
                     axios.post(settings.serverUrl + '/api/post/signin', {
                         email: preState.email,
@@ -42,14 +46,17 @@ export default class LoginForm extends React.Component {
                             // TODO: Redirect to create my first trip
                             if(response.data.token){
                                 localStorage.setItem('id_token', response.data.token);
+                                toggleLogin();
                             }
                         })
                         .catch(function (error) {
                             // TODO: show error message and guide user to re submit
                             console.log(error);
+                            // console.log(this.props);
                         });
                 });
     }
+
     
 
     render() {
@@ -72,7 +79,8 @@ export default class LoginForm extends React.Component {
                     label="Login"
                     primary={true}
                     onClick={this.handleSubmit}
-                    style={styles.loginButton} />
+                    style={styles.loginButton} 
+                    />
             </div>
         );
     }

@@ -8,7 +8,7 @@ const RegisterSection = () => (
             <div className="infoSection">
                 <img src="/images/register.jpg" className="image"></img>
             </div>
-            <RegisterForm className="registerForm" />
+            <RegisterForm className="registerForm"/>
         </div>
     </div>
 );

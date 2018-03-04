@@ -1,5 +1,5 @@
 /*
-Formate required:
+Format required:
  • userName: 3-20 characters
  • email: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
  • phoneNumber: less than 20 characters
@@ -86,7 +86,7 @@ export default class RegisterForm extends React.Component {
             });
         } else {
             this.setState({
-                emailErrMessage: 'Email formate incorrect',
+                emailErrMessage: 'Email format incorrect',
                 isEmailFormatIncorrect: true
             });
         }

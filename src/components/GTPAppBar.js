@@ -72,7 +72,6 @@ class GTPAppBar extends Component {
                 title={<span style={styles.title}><Link to="/" style={styles.link}>Group Travel Planner</Link></span>}
                 onLeftIconButtonClick={this.props.toggleDrawer}
                 iconElementRight={this.props.isLogged ? <Logged toggleLogout={this.props.toggleLogout}/> : <Login />}
-
             />
         );
     }

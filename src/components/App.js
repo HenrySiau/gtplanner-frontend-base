@@ -12,6 +12,8 @@ import {
     Route
 } from 'react-router-dom';
 
+
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -20,6 +22,7 @@ class App extends Component {
             isLogged: localStorage.getItem('id_token') ? true : false
         };
         this.toggleLogout = this.toggleLogout.bind(this);
+        this.toggleLogin = this.toggleLogin.bind(this);
         this.toggleDrawer = this.toggleDrawer.bind(this);
     }
 
@@ -33,6 +36,10 @@ class App extends Component {
     
     toggleLogout = ()=>{
         this.setState({isLogged: false})
+    }
+
+    toggleLogin = ()=>{
+        this.setState({isLogged: true})
     }
 
     render() {
@@ -54,7 +61,7 @@ class App extends Component {
 
                         <div className="mainSection">
                             <Route exact path="/" component={MainSection} />
-                            <Route exact path="/login" component={LoginSection} />
+                            <Route exact path="/login" component={()=>(<LoginSection toggleLogin={this.toggleLogin}/>)} />
                             <Route exact path="/register" component={RegisterSection} />
                         </div>
                     </div>
