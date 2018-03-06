@@ -48,6 +48,7 @@ export default class LoginForm extends React.Component {
                             if(response.data.token){
                                 localStorage.setItem('id_token', response.data.token);
                                 toggleLogin();
+                                window.location="/"
                             }
                         })
                         .catch(function (error) {

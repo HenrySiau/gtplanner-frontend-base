@@ -8,9 +8,9 @@ import LoginSection from '../sections/LoginSection'
 import RegisterSection from '../sections/RegisterSection'
 import {
     BrowserRouter as Router,
-    Route
+    Route,
+    Redirect
 } from 'react-router-dom';
-
 
 
 class App extends Component {
@@ -59,7 +59,7 @@ class App extends Component {
                         />
 
                         <div className="mainSection">
-                            <Route exact path="/" component={MainSection} />
+                            <PrivateRoute exact path="/dashboard" component={MainSection} />
                             <Route exact path="/login" component={()=>(<LoginSection toggleLogin={this.toggleLogin}/>)} />
                             <Route exact path="/register" component={RegisterSection} />
                         </div>

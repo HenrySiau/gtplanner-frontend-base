@@ -25,7 +25,7 @@ class Login extends Component {
     render() {
         return (
             <div>
-                <Link to="/login" ><FlatButton  label="Login" style={styles.link} /></Link>
+                <Link to="/login" ><FlatButton label="Login" style={styles.link} /></Link>
                 <Link to="/register"><FlatButton label="Register" style={styles.link} /></Link>
             </div>
         );
@@ -50,6 +50,7 @@ const Logged = (props) => (
             onClick={() => {
                 localStorage.removeItem('id_token');
                 props.toggleLogout();
+                window.location = "/";
             }} />
     </IconMenu>
 );
@@ -62,7 +63,7 @@ class GTPAppBar extends Component {
                 className="appbar"
                 title={<span style={styles.title}><Link to="/" style={styles.link}>Group Travel Planner</Link></span>}
                 onLeftIconButtonClick={this.props.toggleDrawer}
-                iconElementRight={this.props.isLogged ? <Logged toggleLogout={this.props.toggleLogout}/> : <Login />}
+                iconElementRight={this.props.isLogged ? <Logged toggleLogout={this.props.toggleLogout} /> : <Login />}
             />
         );
     }

@@ -2,7 +2,6 @@
 Format required:
  • userName: 3-20 characters
  • email: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
- • phoneNumber: less than 20 characters
  • password: 8-30 characters, must contain a lowercase letter, a capital letter and a number
 
 */
@@ -103,7 +102,7 @@ export default class RegisterForm extends React.Component {
         if (this.state.userName.length < 3 || this.state.userName.length > 21) {
             this.setState({
                 isUserNameFormatIncorrect: true,
-                userNameErrMessage: 'User Name must be shorter than 20 charactors and longer than 2 charactors'
+                userNameErrMessage: 'User Name must be shorter than 20 characters and longer than 2 characters'
             });
         } else {
             this.setState({
@@ -129,7 +128,7 @@ export default class RegisterForm extends React.Component {
         } else {
             if (event.target.value.length > 21) {
                 this.setState({
-                    userNameErrMessage: 'User Name must be shorter than 20 charactors and longer than 2 charactors',
+                    userNameErrMessage: 'User Name must be shorter than 20 characters and longer than 2 characters',
                     isUserNameFormatIncorrect: true
                 });
             }
@@ -212,8 +211,6 @@ export default class RegisterForm extends React.Component {
                 isPasswordSatisfyLengthRequirement: false
             });
         }
-        // console.log(this.state.isPasswordContainaCapital + this.state.isPasswordContainaLowercase + this.state.isPasswordContainaNumber + this.state.isPasswordSatisfyLengthRequirement);
-
     };
 
     showPasswordRequirements = (event) => {
