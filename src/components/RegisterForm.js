@@ -53,15 +53,15 @@ export default class RegisterForm extends React.Component {
             passwordConfirm: '',
             userNameErrMessage: '',
             passwordErrMessage: '',
-            passwordCnfirmErrMessage: '',
+            passwordConfirmErrMessage: '',
             emailErrMessage: '',
-            phoneNumberErrmessage: '',
+            phoneNumberErrMessage: '',
             isEmailFormatIncorrect: false,
             isUserNameFormatIncorrect: false,
             isPopoverOpen: false,
-            isPasswordContainaLowercase: false,
-            isPasswordContainaCapital: false,
-            isPasswordContainaNumber: false,
+            isPasswordContainLowercase: false,
+            isPasswordContainCapital: false,
+            isPasswordContainNumber: false,
             isPasswordSatisfyLengthRequirement: false,
         };
     }
@@ -144,8 +144,8 @@ export default class RegisterForm extends React.Component {
         }
     };
     validatePassword = () => {
-        if (this.state.isPasswordContainaCapital && this.state.isPasswordContainaLowercase &&
-            this.state.isPasswordContainaNumber && this.state.isPasswordSatisfyLengthRequirement) {
+        if (this.state.isPasswordContainCapital && this.state.isPasswordContainLowercase &&
+            this.state.isPasswordContainNumber && this.state.isPasswordSatisfyLengthRequirement) {
             this.setState({
                 isPopoverOpen: false
             });
@@ -169,35 +169,35 @@ export default class RegisterForm extends React.Component {
         // validate lowercase
         if (event.target.value.match(/[a-z]/g)) {
             this.setState(
-                { isPasswordContainaLowercase: true },
+                { isPasswordContainLowercase: true },
                 () => this.validatePassword()
             );
         } else {
             this.setState({
-                isPasswordContainaLowercase: false
+                isPasswordContainLowercase: false
             });
         }
         // validate capital letter
         if (event.target.value.match(/[A-Z]/g)) {
             this.setState(
-                { isPasswordContainaCapital: true },
+                { isPasswordContainCapital: true },
                 () => this.validatePassword()
             );
         } else {
             this.setState(
-                { isPasswordContainaCapital: false },
+                { isPasswordContainCapital: false },
                 () => this.validatePassword()
             );
         }
         // validate number
         if (event.target.value.match(/[0-9]/g)) {
             this.setState(
-                { isPasswordContainaNumber: true },
+                { isPasswordContainNumber: true },
                 () => this.validatePassword()
             );
         } else {
             this.setState({
-                isPasswordContainaNumber: false
+                isPasswordContainNumber: false
             });
         }
         //validate length
@@ -230,12 +230,12 @@ export default class RegisterForm extends React.Component {
 
         if (event.target.value !== this.state.password) {
             this.setState({
-                passwordCnfirmErrMessage: `password doesn't match`
+                passwordConfirmErrMessage: `password doesn't match`
             });
         } else {
             this.setState({
                 passwordConfirm: event.target.value,
-                passwordCnfirmErrMessage: ''
+                passwordConfirmErrMessage: ''
             });
         }
     };
@@ -291,7 +291,7 @@ export default class RegisterForm extends React.Component {
                 <TextField
                     hintText="Phone Number"
                     floatingLabelText="Phone Number"
-                    errorText={this.state.phoneNumberErrmessage}
+                    errorText={this.state.phoneNumberErrMessage}
                     onChange={this.handlePhoneNumberChange}
                 /><br />
                 <TextField
@@ -314,11 +314,11 @@ export default class RegisterForm extends React.Component {
                 >
                     <p style={styles.popoverTitle}>Password must contain:</p>
                     <ul>
-                        <li style={this.state.isPasswordContainaLowercase ? styles.valid : styles.invalid}>
+                        <li style={this.state.isPasswordContainLowercase ? styles.valid : styles.invalid}>
                             a lowercase letter</li>
-                        <li style={this.state.isPasswordContainaCapital ? styles.valid : styles.invalid}>
+                        <li style={this.state.isPasswordContainCapital ? styles.valid : styles.invalid}>
                             a CAPITAL letter</li>
-                        <li style={this.state.isPasswordContainaNumber ? styles.valid : styles.invalid}>
+                        <li style={this.state.isPasswordContainNumber ? styles.valid : styles.invalid}>
                             a number</li>
                         <li style={this.state.isPasswordSatisfyLengthRequirement ? styles.valid : styles.invalid}>
                             8 to 30 characters</li>
@@ -329,7 +329,7 @@ export default class RegisterForm extends React.Component {
                     hintText="Confirm Password"
                     floatingLabelText="Confirm Password"
                     type="password"
-                    errorText={this.state.passwordCnfirmErrMessage}
+                    errorText={this.state.passwordConfirmErrMessage}
                     errorStyle={styles.psdCnfErrStyle}
                     onChange={this.handlePasswordConfirmChange}
                     onKeyPress={this.handlePressEnter}
