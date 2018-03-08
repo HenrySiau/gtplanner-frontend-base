@@ -265,6 +265,12 @@ export default class RegisterForm extends React.Component {
 
     }
 
+    handlePressEnter = (e)=>{
+        if(e.key === 'Enter'){
+            this.handleSubmit();
+        }
+    }
+
     render() {
         return (
             <div>
@@ -326,6 +332,7 @@ export default class RegisterForm extends React.Component {
                     errorText={this.state.passwordCnfirmErrMessage}
                     errorStyle={styles.psdCnfErrStyle}
                     onChange={this.handlePasswordConfirmChange}
+                    onKeyPress={this.handlePressEnter}
                 /><br />
                 <RaisedButton
                     label="Register"
