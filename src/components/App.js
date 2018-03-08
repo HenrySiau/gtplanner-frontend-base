@@ -7,6 +7,7 @@ import MainSection from '../sections/MainSection';
 import LoginSection from '../sections/LoginSection';
 import RegisterSection from '../sections/RegisterSection';
 import DashBoardSection from '../sections/DashBoardSection';
+import CreateTripSection from '../sections/CreateTripSection';
 import {
     BrowserRouter as Router,
     Route,
@@ -15,21 +16,21 @@ import {
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
-      {...rest}
-      render={props =>
-        localStorage.getItem('id_token') ? (
-          <Component {...props} />
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/login",
-              state: { from: props.location }
-            }}
-          />
-        )
-      }
+        {...rest}
+        render={props =>
+            localStorage.getItem('id_token') ? (
+                <Component {...props} />
+            ) : (
+                    <Redirect
+                        to={{
+                            pathname: "/login",
+                            state: { from: props.location }
+                        }}
+                    />
+                )
+        }
     />
-  );
+);
 
 class App extends Component {
     constructor(props) {
@@ -88,6 +89,7 @@ class App extends Component {
                                 render={(props) => (<MainSection {...props} />)}
                             /> */}
                             <PrivateRoute path="/dashboard" component={DashBoardSection} />
+                            <PrivateRoute path="/trip/new" component={CreateTripSection} />
                         </div>
                     </div>
                 </MuiThemeProvider>

@@ -1,14 +1,14 @@
 import React from 'react';
 import RegisterForm from '../components/RegisterForm'
 import '../css/registerSection.css';
-const RegisterSection = () => (
+const RegisterSection = (props) => (
     <div className="registerSectionContainer">
         <h1 className="title">Create your GT Planner Accout</h1>
         <div className="registerSection">
             <div className="infoSection">
                 <img src="/images/register.jpg" className="image" alt="register"></img>
             </div>
-            <RegisterForm className="registerForm"/>
+            <RegisterForm className="registerForm" {...props}/>
         </div>
     </div>
 );
