@@ -41,6 +41,7 @@ const styles = {
 
 };
 
+
 export default class RegisterForm extends React.Component {
     constructor(props) {
         super(props);
@@ -241,6 +242,7 @@ export default class RegisterForm extends React.Component {
     };
 
     handleSubmit = () => {
+        const history = this.props.history;
         // Use updater function to make sure get the newest state
         this.setState((preState) => {
 
@@ -251,10 +253,10 @@ export default class RegisterForm extends React.Component {
                 password: preState.password,
                 passwordConfirm: preState.passwordConfirm
 
-
             })
                 .then(function (response) {
                     // TODO: Redirect to create my first trip
+                    history.push('/trip/new');
                     console.log(response);
                 })
                 .catch(function (error) {

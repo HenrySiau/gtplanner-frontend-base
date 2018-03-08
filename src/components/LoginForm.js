@@ -38,6 +38,7 @@ export default class LoginForm extends React.Component {
     handleSubmit = () => {
                 // Use updater function to make sure get the newest state
                 const toggleLogin = this.props.toggleLogin;
+                const history = this.props.history;
                 this.setState((preState) => {
                     axios.post(settings.serverUrl + '/api/post/signin', {
                         email: preState.email,
@@ -48,7 +49,7 @@ export default class LoginForm extends React.Component {
                             if(response.data.token){
                                 localStorage.setItem('id_token', response.data.token);
                                 toggleLogin();
-                                // window.location="/"
+                                history.push('/dashboard');
                             }
                         })
                         .catch(function (error) {
