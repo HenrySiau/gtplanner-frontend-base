@@ -48,18 +48,21 @@ export default class LoginForm extends React.Component {
                             if(response.data.token){
                                 localStorage.setItem('id_token', response.data.token);
                                 toggleLogin();
-                                window.location="/"
+                                // window.location="/"
                             }
                         })
                         .catch(function (error) {
                             // TODO: show error message and guide user to re submit
-                            console.log(error);
-                            // console.log(this.props);
+                            console.error(error);
                         });
                 });
     }
 
-    
+    handlePressEnter = (e)=>{
+        if(e.key === 'Enter'){
+            this.handleSubmit();
+        }
+    }
 
     render() {
         return (
@@ -74,8 +77,8 @@ export default class LoginForm extends React.Component {
                     hintText="Password"
                     floatingLabelText="Password"
                     type="password"
-                    // value={this.state.value}
                     onChange={this.handlePasswordChange}
+                    onKeyPress={this.handlePressEnter}
                 /><br />
                 <RaisedButton
                     label="Login"

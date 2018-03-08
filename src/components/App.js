@@ -32,13 +32,13 @@ class App extends Component {
     setDrawerState = (open) => {
         this.setState({ isDrawerOpen: open });
     };
-    
-    toggleLogout = ()=>{
-        this.setState({isLogged: false})
+
+    toggleLogout = () => {
+        this.setState({ isLogged: false })
     }
 
-    toggleLogin = ()=>{
-        this.setState({isLogged: true})
+    toggleLogin = () => {
+        this.setState({ isLogged: true })
     }
 
     render() {
@@ -57,11 +57,18 @@ class App extends Component {
                             toggleDrawer={this.toggleDrawer}
                             setDrawerState={this.setDrawerState}
                         />
-
                         <div className="mainSection">
-                            <PrivateRoute exact path="/dashboard" component={MainSection} />
-                            <Route exact path="/login" component={()=>(<LoginSection toggleLogin={this.toggleLogin}/>)} />
-                            <Route exact path="/register" component={RegisterSection} />
+                            <Route
+                                exact path="/login"
+                                render={(props) => (<LoginSection {...props}
+                                    toggleLogin={this.toggleLogin} />)}
+                            />
+                            <Route exact path="/register"
+                                render={(props) => (<RegisterSection {...props} />)}
+                            />
+                            <Route exact path="/"
+                                render={(props) => (<MainSection {...props} />)}
+                            />
                         </div>
                     </div>
                 </MuiThemeProvider>
