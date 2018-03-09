@@ -4,11 +4,19 @@ import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
 import axios from 'axios';
 import settings from '../config';
+import { orange500, blue500 } from 'material-ui/styles/colors';
 
 const styles = {
     loginButton: {
         margin: '10px 10px 5px 90px'
-    }
+    },
+    hintStyle: {
+        display: 'flex',
+        clear: 'both'
+    },
+    floatingLabelStyle: {
+        
+    },
 };
 
 export default class CreateTripForm extends React.Component {
@@ -80,12 +88,16 @@ export default class CreateTripForm extends React.Component {
                     hintText="Trip Name"
                     floatingLabelText="Trip Name"
                     // value={this.state.value}
+                    hintStyle={styles.errorStyle}
+                    floatingLabelStyle={styles.errorStyle}
                     onChange={this.handleEmailChange}
+
                 /><br />
                 <TextField
                     hintText="Destination"
                     floatingLabelText="Destination"
                     onChange={this.handleDestinationChange}
+                    hintStyle={styles.hintStyle}
                 /><br />
                 <DatePicker
                     onChange={this.handleChangeStartDate}
@@ -110,12 +122,14 @@ export default class CreateTripForm extends React.Component {
                     multiLine={true}
                     rows={2}
                     onChange={this.handleDescriptionChange}
+                    hintStyle={styles.hintStyle}
+                    floatingLabelStyle={styles.hintStyle}
                 /><br />
                 <RaisedButton
                     label="Create"
                     primary={true}
                     onClick={this.handleSubmit}
-                    style={styles.loginButton}
+                    style={styles.floatingLabelStyle}
                 />
             </div>
         );
