@@ -15,7 +15,7 @@ const styles = {
         clear: 'both'
     },
     floatingLabelStyle: {
-        
+
     },
 };
 
@@ -51,27 +51,7 @@ export default class CreateTripForm extends React.Component {
         });
     }
     handleSubmit = () => {
-        // Use updater function to make sure get the newest state
-        // const toggleLogin = this.props.toggleLogin;
-        // const history = this.props.history;
-        // this.setState((preState) => {
-        //     axios.post(settings.serverUrl + '/api/post/signin', {
-        //         email: preState.email,
-        //         password: preState.password
-        //     })
-        //         .then(function (response) {
-        //             // TODO: Redirect to create my first trip
-        //             if(response.data.token){
-        //                 localStorage.setItem('id_token', response.data.token);
-        //                 toggleLogin();
-        //                 history.push('/dashboard');
-        //             }
-        //         })
-        //         .catch(function (error) {
-        //             // TODO: show error message and guide user to re submit
-        //             console.error(error);
-        //         });
-        // });
+
     }
 
     handleChangeStartDate = (event, date) => {
@@ -104,18 +84,14 @@ export default class CreateTripForm extends React.Component {
                     floatingLabelText="Start Date"
                     autoOk={true}
                     minDate={new Date()}
-                // maxDate={this.state.maxDate}
-                // disableYearSelection={this.state.disableYearSelection}
                 /><br />
                 <DatePicker
                     onChange={this.handleChangeStartDate}
                     floatingLabelText="End Date"
                     autoOk={true}
                     minDate={this.state.startDate}
-                // maxDate={this.state.maxDate}
-                // disableYearSelection={this.state.disableYearSelection}
+
                 /><br />
-                {/* BUG: hintText off position */}
                 <TextField
                     hintText="Description"
                     floatingLabelText="Description"
@@ -129,7 +105,7 @@ export default class CreateTripForm extends React.Component {
                     label="Create"
                     primary={true}
                     onClick={this.handleSubmit}
-                    style={styles.floatingLabelStyle}
+                    style={styles.loginButton}
                 />
             </div>
         );
