@@ -6,6 +6,7 @@ import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import axios from 'axios';
 import settings from '../config';
 import validator from './Validator';
+import Dialog from 'material-ui/Dialog';
 
 const styles = {
     psdCnfErrStyle: {
@@ -16,6 +17,9 @@ const styles = {
     },
     loginButton: {
         margin: '10px 10px 5px 90px'
+    },
+    dialogButton: {
+        margin: '0 10px 0 10px'
     },
     valid: {
         color: blue500
@@ -58,17 +62,8 @@ export default class RegisterForm extends React.Component {
             isPasswordContainCapital: false,
             isPasswordContainNumber: false,
             isPasswordSatisfyLengthRequirement: false,
+            isDialogOpen: false
         };
-    }
-
-    paperStyle = () => {
-        return ({
-            height: 100,
-            width: 270,
-            margin: 20,
-            textAlign: 'center',
-            display: 'flex',
-        });
     }
 
     ValidateEmailFormat(email) {
@@ -237,9 +232,10 @@ export default class RegisterForm extends React.Component {
 
     handleSubmit = () => {
         const history = this.props.history;
+        const toggleLogin = this.props.toggleLogin;
+        const handleDialogOpen = this.handleDialogOpen;
         // Use updater function to make sure get the newest state
         this.setState((preState) => {
-
             axios.post(settings.serverUrl + '/api/post/register', {
                 userName: preState.userName,
                 email: preState.email,
@@ -249,25 +245,70 @@ export default class RegisterForm extends React.Component {
 
             })
                 .then(function (response) {
-                    // TODO: Redirect to create my first trip
-                    history.push('/trip/new');
-                    console.log(response);
+                    if (response.data.token) {
+                        localStorage.setItem('id_token', response.data.token);
+                        toggleLogin();
+                        // history.push('/trip/new');
+                        handleDialogOpen();
+                    }
                 })
                 .catch(function (error) {
                     // TODO: show error message and guide user to re submit
                     console.log(error);
+                    console.log(error.response);
                 });
         });
 
     }
 
-    handlePressEnter = (e)=>{
-        if(e.key === 'Enter'){
+    handlePressEnter = (e) => {
+        if (e.key === 'Enter') {
             this.handleSubmit();
         }
     }
 
+    handleDialogClose = () => {
+        this.setState({
+            isDialogOpen: false
+        });
+    }
+
+    handleDialogOpen = () => {
+        this.setState({
+            isDialogOpen: true
+        });
+    }
+
+    createNewTrip = () => {
+        this.props.history.push('/trip/new');
+        this.setState({
+            isDialogOpen: false
+        });
+    }
+
+    goToDashboard = () => {
+        this.props.history.push('/dashboard');
+        this.setState({
+            isDialogOpen: false
+        });
+    }
+
     render() {
+        const dialogActions = [
+            <RaisedButton
+                label="Create a new Trip"
+                primary={true}
+                onClick={this.createNewTrip}
+                style={styles.dialogButton}
+            />,
+            <RaisedButton
+                label="Go to my dashboard"
+                primary={true}
+                onClick={this.goToDashboard}
+                style={styles.dialogButton}
+            />,
+        ];
+
         return (
             <div>
                 <TextField
@@ -335,6 +376,15 @@ export default class RegisterForm extends React.Component {
                     primary={true}
                     onClick={this.handleSubmit}
                     style={styles.loginButton} />
+
+                <Dialog
+                    title="Welcome to GT Planner"
+                    actions={dialogActions}
+                    modal={true}
+                    open={this.state.isDialogOpen}
+                >
+                Your account had successfully set up, please choose your next step.
+        </Dialog>
             </div>
         );
     }

@@ -5,6 +5,7 @@ import Chip from 'material-ui/Chip';
 import axios from 'axios';
 import settings from '../config';
 import validator from './Validator';
+import Dialog from 'material-ui/Dialog';
 
 const styles = {
     loginButton: {
@@ -16,8 +17,14 @@ const styles = {
     wrapper: {
         display: 'flex',
         flexWrap: 'wrap',
-        width: '300px',
+        width: '250px',
         margin: '20px 0 0 0',
+    },
+    dialogButton: {
+        margin: '5px 10px 5px 10px'
+    },
+    inputNewCode:{
+        margin: '5px 10px 5px 30px'
     }
 };
 
@@ -26,29 +33,44 @@ export default class InviteMemberForm extends React.Component {
         super(props);
 
         this.state = {
-            emailList: ['henry@gmail.com', 'john@gmail.com'],
+            emailList: [],
             emailToAdd: '',
-            emailErrMessage: ''
+            emailErrMessage: '',
+            isDialogOpen: false
         };
+        // TODO Do I need to bind all methods?
         this.handleSubmit = this.handleSubmit.bind(this);
+
+        const toggleDialogOpen = this.toggleDialogOpen;
+        axios.post(settings.serverUrl + '/api/post/invite/code/verify', {
+            code: this.props.match.params.code,
+        })
+            .then(function (response) {
+                // TODO: get trip name and show it on page
+                if (response.data) {
+                    console.log(response.data);
+                }
+            })
+            .catch(function (error) {
+                toggleDialogOpen();
+            });
     }
 
 
-    // toggleLogin = this.props.toggleLogin;
 
     handleEmailChange = (event) => {
         this.setState({
             emailToAdd: event.target.value
         });
-        if(this.state.emailErrMessage){
-            if(validator.emailFormatOK(event.target.value)){
+        if (this.state.emailErrMessage) {
+            if (validator.emailFormatOK(event.target.value)) {
                 this.setState({
                     emailErrMessage: ''
                 });
             }
         }
-        
-        
+
+
     };
 
 
@@ -71,43 +93,23 @@ export default class InviteMemberForm extends React.Component {
     }
 
     handleSubmit = () => {
-        // // Use updater function to make sure get the newest state
-        // const toggleLogin = this.props.toggleLogin;
-        // const history = this.props.history;
-        // this.setState((preState) => {
-        //     axios.post(settings.serverUrl + '/api/post/signin', {
-        //         email: preState.email,
-        //         password: preState.password
-        //     })
-        //         .then(function (response) {
-        //             // TODO: Redirect to create my first trip
-        //             if(response.data.token){
-        //                 localStorage.setItem('id_token', response.data.token);
-        //                 toggleLogin();
-        //                 history.push('/dashboard');
-        //             }
-        //         })
-        //         .catch(function (error) {
-        //             // TODO: show error message and guide user to re submit
-        //             console.error(error);
-        //         });
-        // });
+
     }
 
     handleAddEmail = () => {
         this.emailList = this.state.emailList;
         this.email = this.state.emailToAdd;
 
-        if(this.emailList.includes(this.email)){
+        if (this.emailList.includes(this.email)) {
             //TODO: flash message: Email already in the list
             this.setState({
                 emailToAdd: ''
             });
-        }else if(!validator.emailFormatOK(this.email)){
+        } else if (!validator.emailFormatOK(this.email)) {
             this.setState({
                 emailErrMessage: 'Invalid email format'
             });
-        }else{
+        } else {
             this.emailList.push(this.email);
             this.setState({
                 emailList: this.emailList,
@@ -122,9 +124,30 @@ export default class InviteMemberForm extends React.Component {
         }
     }
 
-
+    toggleDialogOpen = () => {
+        this.setState({
+            isDialogOpen: true
+        });
+    }
 
     render() {
+        const dialogActions = [
+            <RaisedButton
+                label="Use New Code"
+                primary={true}
+                onClick={this.createNewTrip}
+                style={styles.dialogButton}
+            />,
+            <RaisedButton
+                label="Go to home page"
+                primary={true}
+                onClick={this.goToDashboard}
+                style={styles.dialogButton}
+            />,
+        ];
+
+
+
         return (
             <div>
                 {/* <Chip
@@ -148,6 +171,7 @@ export default class InviteMemberForm extends React.Component {
                         /> </div> : <div></div>
                 }
                 <br />
+                {/* {tripName? <p>Trip Name: {tripName}</p> : <div></div>} */}
                 <p>Invitation Code: {this.props.match.params.code}</p>
                 <TextField
                     hintText="Email"
@@ -163,6 +187,22 @@ export default class InviteMemberForm extends React.Component {
                     onClick={this.handleAddEmail}
                     style={styles.loginButton}
                 />
+                <Dialog
+                    title="Incorrect or expired invitation code"
+                    actions={dialogActions}
+                    modal={true}
+                    open={this.state.isDialogOpen}
+                >
+                    please double check and re-submit your invitation code.
+                    <br />
+                    <TextField
+                    hintText="New Code"
+                    floatingLabelText="New Code"
+                    onChange={this.handleEmailChange}
+                    onKeyPress={this.handlePressEnter}
+                    style={styles.dialogButton}
+                />
+        </Dialog>
             </div>
         );
     }

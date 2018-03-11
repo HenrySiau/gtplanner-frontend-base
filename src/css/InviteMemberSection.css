@@ -1,4 +1,4 @@
-.inviteMemberSection {
+/* .inviteMemberSection {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -12,4 +12,44 @@
     margin: 30px;
     width: 350px;
     height: 350px;
+} */
+
+
+.inviteMemberSectionContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.inviteMemberSection {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.inviteMemberForm {
+    margin: 10px;
+}
+
+.image {
+    margin: 30px;
+    width: 350px;
+    height: 350px;
+}
+
+.title {
+    color: rgb(141, 141, 141);
+    margin-top: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+}
+
+.infoSection{
+    height: 420px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

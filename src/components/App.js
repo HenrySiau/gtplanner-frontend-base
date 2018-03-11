@@ -84,14 +84,14 @@ class App extends Component {
                                     toggleLogin={this.toggleLogin} />)}
                             />
                             <Route exact path="/register"
-                                render={(props) => (<RegisterSection {...props} />)}
+                                render={(props) => (<RegisterSection {...props} toggleLogin={this.toggleLogin}/>)}
                             />
                             {/* <Route exact path="/"
                                 render={(props) => (<MainSection {...props} />)}
                             /> */}
-                            <PrivateRoute path="/dashboard" component={DashBoardSection} />
-                            <PrivateRoute path="/trip/new" component={CreateTripSection} />
-                            <PrivateRoute path="/member/invite/:code" component={InviteMemberSection} />
+                            <PrivateRoute exact path="/dashboard" component={DashBoardSection} />
+                            <PrivateRoute exact path="/trip/new" component={CreateTripSection} />
+                            <PrivateRoute exact path="/member/invite/:code" component={InviteMemberSection} />
                         </div>
                     </div>
                 </MuiThemeProvider>

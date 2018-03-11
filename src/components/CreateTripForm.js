@@ -78,7 +78,7 @@ export default class CreateTripForm extends React.Component {
                     // TODO: Redirect to create my first trip
                     console.log(response.data);
                     if (response.data.inviteCode) {
-                        history.push('/member/invite/'+response.data.inviteCode);
+                        history.push('/member/invite/' + response.data.inviteCode);
                     }
                 })
                 .catch(function (error) {
