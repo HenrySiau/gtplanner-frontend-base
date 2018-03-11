@@ -15,7 +15,8 @@ const styles = {
     wrapper: {
         display: 'flex',
         flexWrap: 'wrap',
-        width: '300px'
+        width: '300px',
+        margin: '20px 0 0 0',
     }
 };
 
@@ -25,7 +26,8 @@ export default class InviteMemberForm extends React.Component {
 
         this.state = {
             emailList: ['henry@gmail.com', 'john@gmail.com'],
-            emailToAdd: ''
+            emailToAdd: '',
+            emailErrMessage: ''
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -37,6 +39,14 @@ export default class InviteMemberForm extends React.Component {
         this.setState({
             emailToAdd: event.target.value
         });
+        if(this.state.emailErrMessage){
+            if(event.target.value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
+                this.setState({
+                    emailErrMessage: ''
+                });
+            }
+        }
+        
         
     };
 
@@ -86,15 +96,21 @@ export default class InviteMemberForm extends React.Component {
     handleAddEmail = () => {
         this.emailList = this.state.emailList;
         this.email = this.state.emailToAdd;
-        this.setState({
-            emailToAdd: ''
-        });
+
         if(this.emailList.includes(this.email)){
-            // flash message: Email already in the list
+            //TODO: flash message: Email already in the list
+            this.setState({
+                emailToAdd: ''
+            });
+        }else if(!this.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
+            this.setState({
+                emailErrMessage: 'Invalid email format'
+            });
         }else{
             this.emailList.push(this.email);
             this.setState({
-                emailList: this.emailList
+                emailList: this.emailList,
+                emailToAdd: ''
             });
         }
     }
@@ -138,6 +154,7 @@ export default class InviteMemberForm extends React.Component {
                     onChange={this.handleEmailChange}
                     onKeyPress={this.handlePressEnter}
                     value={this.state.emailToAdd}
+                    errorText={this.state.emailErrMessage}
                 /><br />
                 <RaisedButton
                     label="Add"
