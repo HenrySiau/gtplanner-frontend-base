@@ -4,7 +4,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
 import axios from 'axios';
 import settings from '../config';
-import { orange500, blue500 } from 'material-ui/styles/colors';
+
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('id_token');
 
 const styles = {
     loginButton: {
@@ -25,7 +26,11 @@ export default class CreateTripForm extends React.Component {
 
         this.state = {
             tripName: '',
-            destination: ''
+            destination: '',
+            description: '',
+            startDate: '',
+            endDate: ''
+
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -34,7 +39,6 @@ export default class CreateTripForm extends React.Component {
     // toggleLogin = this.props.toggleLogin;
 
     handleTripNameChange = (event) => {
-
         this.setState({
             tripName: event.target.value
         });
@@ -51,13 +55,50 @@ export default class CreateTripForm extends React.Component {
         });
     }
     handleSubmit = () => {
+        console.log(this.state);
 
+        const history = this.props.history;
+        this.setState((preState) => {
+            axios({
+                method: 'POST',
+                url: settings.serverUrl + '/api/post/trip/new',
+                json: true,
+                headers: {
+                    'x-access-token': localStorage.getItem('id_token'),
+                },
+                data: {
+                    tripName: preState.tripName,
+                    destination: preState.destination,
+                    description: preState.description,
+                    startDate: preState.startDate,
+                    endDate: preState.endDate
+                }
+            })
+                .then(function (response) {
+                    // TODO: Redirect to create my first trip
+                    console.log(response.data);
+                    if (response.data.inviteCode) {
+                        history.push('/member/invite/'+response.data.inviteCode);
+                    }
+                })
+                .catch(function (error) {
+                    // TODO: show error message and guide user to re submit
+                    console.error(error);
+                });
+        });
     }
 
     handleChangeStartDate = (event, date) => {
         console.log(date);
         this.setState({
             startDate: date
+        });
+    }
+
+    handleChangeEndDate = (event, date) => {
+        console.log(date);
+        this.setState({
+            endDate: date
         });
     }
 
@@ -70,7 +111,7 @@ export default class CreateTripForm extends React.Component {
                     // value={this.state.value}
                     hintStyle={styles.errorStyle}
                     floatingLabelStyle={styles.errorStyle}
-                    onChange={this.handleEmailChange}
+                    onChange={this.handleTripNameChange}
 
                 /><br />
                 <TextField
@@ -86,10 +127,10 @@ export default class CreateTripForm extends React.Component {
                     minDate={new Date()}
                 /><br />
                 <DatePicker
-                    onChange={this.handleChangeStartDate}
+                    onChange={this.handleChangeEndDate}
                     floatingLabelText="End Date"
                     autoOk={true}
-                    minDate={this.state.startDate}
+                    minDate={this.state.startDate || new Date()}
 
                 /><br />
                 <TextField

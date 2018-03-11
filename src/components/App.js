@@ -8,6 +8,7 @@ import LoginSection from '../sections/LoginSection';
 import RegisterSection from '../sections/RegisterSection';
 import DashBoardSection from '../sections/DashBoardSection';
 import CreateTripSection from '../sections/CreateTripSection';
+import InviteMemberSection from '../sections/InviteMemberSection';
 import {
     BrowserRouter as Router,
     Route,
@@ -90,6 +91,7 @@ class App extends Component {
                             /> */}
                             <PrivateRoute path="/dashboard" component={DashBoardSection} />
                             <PrivateRoute path="/trip/new" component={CreateTripSection} />
+                            <PrivateRoute path="/member/invite/:code" component={InviteMemberSection} />
                         </div>
                     </div>
                 </MuiThemeProvider>
