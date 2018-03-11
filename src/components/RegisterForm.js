@@ -94,10 +94,10 @@ export default class RegisterForm extends React.Component {
     }
 
     ValidateUserNameFormat = (event) => {
-        if (this.state.userName.length < 3 || this.state.userName.length > 21) {
+        if (this.state.userName.length < 2 || this.state.userName.length > 21) {
             this.setState({
                 isUserNameFormatIncorrect: true,
-                userNameErrMessage: 'User Name must be shorter than 20 characters and longer than 2 characters'
+                userNameErrMessage: 'User Name must be shorter than 20 characters and longer than 1 characters'
             });
         } else {
             this.setState({
@@ -114,7 +114,7 @@ export default class RegisterForm extends React.Component {
 
         if (this.state.isUserNameFormatIncorrect) {
 
-            if (event.target.value.length < 21 && event.target.value.length > 2) {
+            if (event.target.value.length < 21 && event.target.value.length > 1) {
                 this.setState({
                     userNameErrMessage: '',
                     isUserNameFormatIncorrect: false
@@ -123,7 +123,7 @@ export default class RegisterForm extends React.Component {
         } else {
             if (event.target.value.length > 21) {
                 this.setState({
-                    userNameErrMessage: 'User Name must be shorter than 20 characters and longer than 2 characters',
+                    userNameErrMessage: 'User Name must be shorter than 20 characters and longer than 1 characters',
                     isUserNameFormatIncorrect: true
                 });
             }
