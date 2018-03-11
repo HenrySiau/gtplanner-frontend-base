@@ -4,6 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Chip from 'material-ui/Chip';
 import axios from 'axios';
 import settings from '../config';
+import validator from './Validator';
 
 const styles = {
     loginButton: {
@@ -40,7 +41,7 @@ export default class InviteMemberForm extends React.Component {
             emailToAdd: event.target.value
         });
         if(this.state.emailErrMessage){
-            if(event.target.value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
+            if(validator.emailFormatOK(event.target.value)){
                 this.setState({
                     emailErrMessage: ''
                 });
@@ -102,7 +103,7 @@ export default class InviteMemberForm extends React.Component {
             this.setState({
                 emailToAdd: ''
             });
-        }else if(!this.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
+        }else if(!validator.emailFormatOK(this.email)){
             this.setState({
                 emailErrMessage: 'Invalid email format'
             });

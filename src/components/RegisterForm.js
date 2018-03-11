@@ -1,10 +1,3 @@
-/*
-Format required:
- • userName: 3-20 characters
- • email: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
- • password: 8-30 characters, must contain a lowercase letter, a capital letter and a number
-
-*/
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -12,6 +5,7 @@ import { orange500, red500, blue500, lightBlue300 } from 'material-ui/styles/col
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import axios from 'axios';
 import settings from '../config';
+import validator from './Validator';
 
 const styles = {
     psdCnfErrStyle: {
@@ -78,7 +72,7 @@ export default class RegisterForm extends React.Component {
     }
 
     ValidateEmailFormat(email) {
-        if (email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+        if (validator.emailFormatOK(email)) {
             this.setState({
                 emailErrMessage: '',
                 isEmailFormatIncorrect: false
