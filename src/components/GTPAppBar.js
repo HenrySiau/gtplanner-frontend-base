@@ -6,6 +6,7 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import { Link } from 'react-router-dom';
+import settings from '../config';
 
 const styles = {
     title: {
@@ -36,7 +37,8 @@ const Logged = (props) => (
     <IconMenu
         iconButtonElement={
             <IconButton><Avatar
-                src="images/user.png"
+                src= {settings.imageServerUrl + "/images/user.png"}
+                // src= "/images/user.png"
                 size={40}
             /></IconButton>
         }
