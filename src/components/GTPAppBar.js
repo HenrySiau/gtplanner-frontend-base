@@ -9,17 +9,33 @@ import { Link } from 'react-router-dom';
 import settings from '../config';
 import Badge from 'material-ui/Badge';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
+import Add from 'material-ui/svg-icons/content/add';
+import ViewModule from 'material-ui/svg-icons/action/view-module';
+import Subject from 'material-ui/svg-icons/action/subject';
+import { greenA200 } from 'material-ui/styles/colors';
 
 const styles = {
     title: {
         cursor: 'pointer',
     },
     IconMenu: {
-        margin: '0 20px 10px 0'
+        // margin: '0 20px 10px 0'
+    },
+    IconMenus: {
+        margin: '0',
+        height: '20'
     },
     link: {
         link: 'text-decoration: none',
         color: 'white'
+    },
+    appBar: {
+        height: 70
+    },
+    badge: {
+        margin: '0 10px 0 0',
+        padding: 0,
+        height: 10
     }
 };
 
@@ -36,40 +52,56 @@ class Login extends Component {
 }
 
 const Logged = (props) => (
-    <div>
+    <div style={styles.IconMenus}>
         {/* TODO: link to Notifications page */}
         {/* TODO: do not show badge if message count is 0 */}
-    <Badge
-      badgeContent={18}
-      secondary={true}
-      badgeStyle={{top: 18, right: 18}}
-    >
-      <IconButton tooltip="Notifications">
-        <NotificationsIcon />
-      </IconButton>
-    </Badge>
-    <IconMenu
-        iconButtonElement={
-            <IconButton><Avatar
-                src= {settings.imageServerUrl + "/images/user.png"}
-                // src= "/images/user.png"
-                size={40}
-            /></IconButton>
-            
-        }
-        targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-        style={styles.IconMenu}
-    >
-        <Link to="/myaccount"> <MenuItem primaryText="My Account" /></Link>
-        <Link to="/help"><MenuItem primaryText="Help" /></Link>
-        <MenuItem primaryText="Sign out"
-            onClick={() => {
-                localStorage.removeItem('id_token');
-                props.toggleLogout();
-                window.location = "/";
-            }} />
-    </IconMenu>
+        <Badge
+            badgeContent={18}
+            secondary={true}
+            badgeStyle={{ top: -5, right: -5 }}
+            style={styles.badge}
+        >
+            <IconButton tooltip="Message">
+                <NotificationsIcon />
+            </IconButton>
+        </Badge>
+
+        <IconMenu
+            iconButtonElement={
+                <IconButton tooltip="My Account"><Avatar
+                    src={settings.imageServerUrl + "/images/user.png"}
+                    // src= "/images/user.png"
+                    size={30}
+                /></IconButton>
+
+            }
+            targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+            anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
+            style={styles.IconMenu}
+        >
+            <Link to="/myaccount"> <MenuItem primaryText="My Account" /></Link>
+            <Link to="/help"><MenuItem primaryText="Help" /></Link>
+            <MenuItem primaryText="Sign out"
+                onClick={() => {
+                    localStorage.removeItem('id_token');
+                    props.toggleLogout();
+                    window.location = "/";
+                }} />
+        </IconMenu>
+
+        <IconMenu
+            iconButtonElement={<IconButton tooltip="More Actions">
+                <Subject hoverColor={greenA200} />
+            </IconButton>}
+            targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+            anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
+
+        >
+            <MenuItem primaryText="New Event" />
+            <MenuItem primaryText="Invites" />
+            <MenuItem primaryText="Create a new trip" />
+            <MenuItem primaryText="Settings" />
+        </IconMenu>
     </div>
 );
 
@@ -82,6 +114,7 @@ class GTPAppBar extends Component {
                 title={<span style={styles.title}><Link to="/" style={styles.link}>Group Travel Planner</Link></span>}
                 onLeftIconButtonClick={this.props.toggleDrawer}
                 iconElementRight={this.props.isLogged ? <Logged toggleLogout={this.props.toggleLogout} /> : <Login />}
+                style={styles.appBar}
             />
         );
     }
