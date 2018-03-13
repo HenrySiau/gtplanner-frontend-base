@@ -7,6 +7,8 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import { Link } from 'react-router-dom';
 import settings from '../config';
+import Badge from 'material-ui/Badge';
+import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
 const styles = {
     title: {
@@ -34,6 +36,18 @@ class Login extends Component {
 }
 
 const Logged = (props) => (
+    <div>
+        {/* TODO: link to Notifications page */}
+        {/* TODO: do not show badge if message count is 0 */}
+    <Badge
+      badgeContent={18}
+      secondary={true}
+      badgeStyle={{top: 18, right: 18}}
+    >
+      <IconButton tooltip="Notifications">
+        <NotificationsIcon />
+      </IconButton>
+    </Badge>
     <IconMenu
         iconButtonElement={
             <IconButton><Avatar
@@ -41,6 +55,7 @@ const Logged = (props) => (
                 // src= "/images/user.png"
                 size={40}
             /></IconButton>
+            
         }
         targetOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
@@ -55,6 +70,7 @@ const Logged = (props) => (
                 window.location = "/";
             }} />
     </IconMenu>
+    </div>
 );
 
 
