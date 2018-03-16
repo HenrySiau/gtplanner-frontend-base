@@ -12,7 +12,7 @@ import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 import Add from 'material-ui/svg-icons/content/add';
 import ViewModule from 'material-ui/svg-icons/action/view-module';
 import Subject from 'material-ui/svg-icons/action/subject';
-import { greenA200 } from 'material-ui/styles/colors';
+import { greenA200, grey800 } from 'material-ui/styles/colors';
 
 const styles = {
     title: {
@@ -62,7 +62,7 @@ const Logged = (props) => (
             style={styles.badge}
         >
             <IconButton tooltip="Message">
-                <NotificationsIcon />
+                <NotificationsIcon hoverColor={greenA200} color={grey800}/>
             </IconButton>
         </Badge>
 
@@ -91,7 +91,7 @@ const Logged = (props) => (
 
         <IconMenu
             iconButtonElement={<IconButton tooltip="More Actions">
-                <Subject hoverColor={greenA200} />
+                <Subject hoverColor={greenA200} color={grey800}/>
             </IconButton>}
             targetOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
