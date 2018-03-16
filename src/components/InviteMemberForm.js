@@ -23,7 +23,7 @@ const styles = {
     dialogButton: {
         margin: '5px 10px 5px 10px'
     },
-    inputNewCode:{
+    inputNewCode: {
         margin: '5px 10px 5px 30px'
     }
 };
@@ -36,27 +36,47 @@ export default class InviteMemberForm extends React.Component {
             emailList: [],
             emailToAdd: '',
             emailErrMessage: '',
-            isDialogOpen: false
+            isDialogOpen: false,
+            newInvitationCode: ''
         };
+        console.log(this.props.history);
+
         // TODO Do I need to bind all methods?
         this.handleSubmit = this.handleSubmit.bind(this);
 
         const toggleDialogOpen = this.toggleDialogOpen;
-        axios.post(settings.serverUrl + '/api/post/invite/code/verify', {
-            code: this.props.match.params.code,
+
+        axios({
+            method: 'POST',
+            url: settings.serverUrl + '/api/post/invite/code/verify',
+            json: true,
+            headers: {
+                'x-access-token': localStorage.getItem('id_token'),
+            },
+            data: {
+                code: this.props.match.params.code
+            }
         })
             .then(function (response) {
-                // TODO: get trip name and show it on page
-                if (response.data) {
-                    console.log(response.data);
-                }
+                // TODO: Redirect to create my first trip
+                console.log(response.data);
+                // if (response.data.inviteCode) {
+                //     history.push('/member/invite/' + response.data.inviteCode);
+                // }
             })
             .catch(function (error) {
+                // TODO: show error message and guide user to re submit
                 toggleDialogOpen();
             });
     }
 
 
+
+    handleNewInvitationCodeChange = (event) => {
+        this.setState({
+            newInvitationCode: event.target.value
+        });
+    };
 
     handleEmailChange = (event) => {
         this.setState({
@@ -69,8 +89,6 @@ export default class InviteMemberForm extends React.Component {
                 });
             }
         }
-
-
     };
 
 
@@ -124,40 +142,67 @@ export default class InviteMemberForm extends React.Component {
         }
     }
 
+    handleNewCodePressEnter = (e) => {
+        if (e.key === 'Enter') {
+            this.onSubmitNewCode();
+        }
+    }
+
+    onSubmitNewCode = () => {
+        this.props.history.push('/member/invite/' + this.state.newInvitationCode);
+        let toggleDialogClose = this.toggleDialogClose;
+        axios({
+            method: 'POST',
+            url: settings.serverUrl + '/api/post/invite/code/verify',
+            json: true,
+            headers: {
+                'x-access-token': localStorage.getItem('id_token'),
+            },
+            data: {
+                code: this.state.newInvitationCode
+            }
+        })
+            .then(function (response) {
+                toggleDialogClose();
+            })
+            .catch(function (error) {
+                // TODO: show error message and guide user to re submit
+            });
+    }
+
+    onClickGoTOHomePage = () => {
+        this.props.history.push('/');
+    }
+
     toggleDialogOpen = () => {
         this.setState({
             isDialogOpen: true
         });
     }
 
+    toggleDialogClose = () => {
+        this.setState({
+            isDialogOpen: false
+        });
+    }
     render() {
         const dialogActions = [
             <RaisedButton
                 label="Use New Code"
                 primary={true}
-                onClick={this.createNewTrip}
+                onClick={this.onSubmitNewCode}
                 style={styles.dialogButton}
             />,
             <RaisedButton
                 label="Go to home page"
                 primary={true}
-                onClick={this.goToDashboard}
+                onClick={this.onClickGoTOHomePage}
                 style={styles.dialogButton}
             />,
         ];
 
-
-
         return (
             <div>
-                {/* <Chip
-                    key={data.key}
-                    onRequestDelete={() => this.handleRequestDelete(data.key)}
-                    style={this.styles.chip}
-                >
-                    {data.label}
-                </Chip>
-                <br /> */}
                 {this.state.emailList.length > 0 ?
                     <div>
                         <div style={styles.wrapper}>
@@ -196,13 +241,12 @@ export default class InviteMemberForm extends React.Component {
                     please double check and re-submit your invitation code.
                     <br />
                     <TextField
-                    hintText="New Code"
-                    floatingLabelText="New Code"
-                    onChange={this.handleEmailChange}
-                    onKeyPress={this.handlePressEnter}
-                    style={styles.dialogButton}
-                />
-        </Dialog>
+                        hintText="New Code"
+                        floatingLabelText="New Code"
+                        onChange={this.handleNewInvitationCodeChange}
+                        onKeyPress={this.handleNewCodePressEnter}
+                    />
+                </Dialog>
             </div>
         );
     }
