@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
-import isLogin from './isLogin'
+import isLoggedIn from './isLoggedIn'
  
 export default combineReducers({
-  isLogin
+    isLoggedIn
 })

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import '../css/App.css';
-import GTPAppBar from './GTPAppBar';
 import GTPDrawer from './GTPDrawer';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import MainSection from '../sections/MainSection';
@@ -9,11 +8,13 @@ import RegisterSection from '../sections/RegisterSection';
 import DashBoardSection from '../sections/DashBoardSection';
 import CreateTripSection from '../sections/CreateTripSection';
 import InviteMemberSection from '../sections/InviteMemberSection';
+import GtPAppBarContainer from '../containers/GTPAppBarContainer';
 import {
     BrowserRouter as Router,
     Route,
     Redirect
 } from 'react-router-dom';
+import GTPAppBarContainer from '../containers/GTPAppBarContainer';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -66,12 +67,7 @@ class App extends Component {
             <Router >
                 <MuiThemeProvider>
                     <div className="container">
-
-                        <GTPAppBar
-                            toggleDrawer={this.toggleDrawer}
-                            isLogged={this.state.isLogged}
-                            toggleLogout={this.toggleLogout}
-                        />
+                        <GTPAppBarContainer />
                         <GTPDrawer
                             isDrawerOpen={this.state.isDrawerOpen}
                             toggleDrawer={this.toggleDrawer}

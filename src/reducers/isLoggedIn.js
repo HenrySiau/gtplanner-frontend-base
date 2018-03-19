@@ -1,4 +1,4 @@
-const isLogin = (state = false, action) => {
+const isLoggedIn = (state = false, action) => {
     switch (action.type) {
       case 'LOG_IN':
         return true
@@ -9,4 +9,4 @@ const isLogin = (state = false, action) => {
     }
   }
    
-  export default isLogin
+  export default isLoggedIn
