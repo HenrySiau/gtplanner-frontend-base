@@ -3,6 +3,8 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import axios from 'axios';
 import settings from '../config';
+import { connect } from 'react-redux';
+import { login } from '../actions';
 
 const styles = {
     loginButton: {
@@ -10,7 +12,7 @@ const styles = {
     }
 };
 
-export default class LoginForm extends React.Component {
+class LoginForm extends React.Component {
     constructor(props) {
         super(props);
 
@@ -21,11 +23,11 @@ export default class LoginForm extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    
+
     // toggleLogin = this.props.toggleLogin;
 
     handleEmailChange = (event) => {
-        
+
         this.setState({
             email: event.target.value
         });
@@ -35,32 +37,34 @@ export default class LoginForm extends React.Component {
             password: event.target.value
         });
     };
+
     handleSubmit = () => {
-                // Use updater function to make sure get the newest state
-                const toggleLogin = this.props.toggleLogin;
-                const history = this.props.history;
-                this.setState((preState) => {
-                    axios.post(settings.serverUrl + '/api/post/signin', {
-                        email: preState.email,
-                        password: preState.password
-                    })
-                        .then(function (response) {
-                            // TODO: Redirect to create my first trip
-                            if(response.data.token){
-                                localStorage.setItem('id_token', response.data.token);
-                                toggleLogin();
-                                history.push('/dashboard');
-                            }
-                        })
-                        .catch(function (error) {
-                            // TODO: show error message and guide user to re submit
-                            console.error(error);
-                        });
+        let { dispatch } = this.props
+        // Use updater function to make sure get the newest state
+        const toggleLogin = this.props.toggleLogin;
+        const history = this.props.history;
+        this.setState((preState) => {
+            axios.post(settings.serverUrl + '/api/post/signin', {
+                email: preState.email,
+                password: preState.password
+            })
+                .then(function (response) {
+                    // TODO: Redirect to create my first trip
+                    if (response.data.token) {
+                        localStorage.setItem('id_token', response.data.token);
+                        dispatch(login);
+                        history.push('/dashboard');
+                    }
+                })
+                .catch(function (error) {
+                    // TODO: show error message and guide user to re submit
+                    console.error(error);
                 });
+        });
     }
 
-    handlePressEnter = (e)=>{
-        if(e.key === 'Enter'){
+    handlePressEnter = (e) => {
+        if (e.key === 'Enter') {
             this.handleSubmit();
         }
     }
@@ -85,10 +89,12 @@ export default class LoginForm extends React.Component {
                     label="Login"
                     primary={true}
                     onClick={this.handleSubmit}
-                    style={styles.loginButton} 
-                    />
+                    style={styles.loginButton}
+                />
             </div>
         );
     }
 }
 
+LoginForm = connect()(LoginForm);
+export default LoginForm
