@@ -39,9 +39,8 @@ class LoginForm extends React.Component {
     };
 
     handleSubmit = () => {
-        let { dispatch } = this.props
+        let { dispatch } = this.props;
         // Use updater function to make sure get the newest state
-        const toggleLogin = this.props.toggleLogin;
         const history = this.props.history;
         this.setState((preState) => {
             axios.post(settings.serverUrl + '/api/post/signin', {

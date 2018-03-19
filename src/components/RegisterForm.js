@@ -7,6 +7,8 @@ import axios from 'axios';
 import settings from '../config';
 import validator from './Validator';
 import Dialog from 'material-ui/Dialog';
+import { connect } from 'react-redux';
+import {login} from '../actions'
 
 const styles = {
     psdCnfErrStyle: {
@@ -40,7 +42,7 @@ const styles = {
 };
 
 
-export default class RegisterForm extends React.Component {
+class RegisterForm extends React.Component {
     constructor(props) {
         super(props);
 
@@ -232,7 +234,7 @@ export default class RegisterForm extends React.Component {
 
     handleSubmit = () => {
         const history = this.props.history;
-        const toggleLogin = this.props.toggleLogin;
+        let { dispatch } = this.props;
         const handleDialogOpen = this.handleDialogOpen;
         // Use updater function to make sure get the newest state
         this.setState((preState) => {
@@ -247,8 +249,7 @@ export default class RegisterForm extends React.Component {
                 .then(function (response) {
                     if (response.data.token) {
                         localStorage.setItem('id_token', response.data.token);
-                        toggleLogin();
-                        // history.push('/trip/new');
+                        dispatch(login);
                         handleDialogOpen();
                     }
                 })
@@ -390,3 +391,5 @@ export default class RegisterForm extends React.Component {
     }
 }
 
+RegisterForm = connect()(RegisterForm);
+export default RegisterForm;
