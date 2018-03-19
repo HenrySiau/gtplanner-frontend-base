@@ -14,7 +14,7 @@ const GTPDrawer = (props) => (
     width={200}
     docked={false}
     open={props.isDrawerOpen}
-    onRequestChange={(open) => props.setDrawerState(open)}
+    onRequestChange={props.toggleDrawer}
   >
     <AppBar
       className="appbar"

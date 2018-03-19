@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import {login, logout} from '../actions';
+import {login, logout, toggleDrawer} from '../actions';
 import GTPAppBar from '../components/GTPAppBar';
 
 const mapStateToProps = (state) => {
@@ -12,7 +12,10 @@ const mapDispatchToProps = dispatch => {
     return {
         login: () => {
             dispatch(login)
-        }
+        },
+        toggleDrawer: () => {
+            dispatch(toggleDrawer)
+        },
     }
 }
 
