@@ -2,8 +2,11 @@ export const login = {
     type: 'LOG_IN'
 };
 
-export const logout = {
+export function logout(){
+    localStorage.removeItem('id_token');
+    return{
     type: 'LOG_OUT'
+    }
 };
 
 export const toggleDrawer = {

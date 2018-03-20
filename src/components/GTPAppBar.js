@@ -83,9 +83,8 @@ const Logged = (props) => (
             <Link to="/help"><MenuItem primaryText="Help" /></Link>
             <MenuItem primaryText="Sign out"
                 onClick={() => {
-                    localStorage.removeItem('id_token');
                     props.toggleLogout();
-                    window.location = "/";
+                    window.location = "/"; // redirect to home page and reload
                 }} />
         </IconMenu>
 
