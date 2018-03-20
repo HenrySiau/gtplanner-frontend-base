@@ -62,7 +62,7 @@ const Logged = (props) => (
             style={styles.badge}
         >
             <IconButton tooltip="Message">
-                <NotificationsIcon hoverColor={greenA200} color={grey800}/>
+                <NotificationsIcon hoverColor={greenA200} color={grey800} />
             </IconButton>
         </Badge>
 
@@ -91,7 +91,7 @@ const Logged = (props) => (
 
         <IconMenu
             iconButtonElement={<IconButton tooltip="More Actions">
-                <Subject hoverColor={greenA200} color={grey800}/>
+                <Subject hoverColor={greenA200} color={grey800} />
             </IconButton>}
             targetOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
@@ -107,16 +107,23 @@ const Logged = (props) => (
 
 
 class GTPAppBar extends Component {
+    constructor(props) {
+        super(props);
+        if(localStorage.getItem('id_token')){
+            this.props.validateJWT(localStorage.getItem('id_token'));
+        }
+
+    }
     render() {
         return (
             <div>
-            <AppBar
-                className="appbar"
-                title={<span style={styles.title}><Link to="/" style={styles.link}>Group Travel Planner</Link></span>}
-                onLeftIconButtonClick={this.props.toggleDrawer}
-                iconElementRight={this.props.isLoggedIn ? <Logged toggleLogout={this.props.logout} /> : <Login />}
-                style={styles.appBar}
-            />
+                <AppBar
+                    className="appbar"
+                    title={<span style={styles.title}><Link to="/" style={styles.link}>Group Travel Planner</Link></span>}
+                    onLeftIconButtonClick={this.props.toggleDrawer}
+                    iconElementRight={this.props.isLoggedIn ? <Logged toggleLogout={this.props.logout} /> : <Login />}
+                    style={styles.appBar}
+                />
             </div>
         );
     }

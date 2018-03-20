@@ -3,7 +3,7 @@ const isDrawerOpen = (state = false, action) => {
         case 'TOGGLE_DRAWER':
             return !state
         default:
-            return false
+            return state
     }
 }
 
