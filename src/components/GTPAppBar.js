@@ -5,7 +5,7 @@ import FlatButton from 'material-ui/FlatButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import settings from '../config';
 import Badge from 'material-ui/Badge';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
@@ -44,8 +44,8 @@ class Login extends Component {
     render() {
         return (
             <div>
-                <Link to="/login" ><FlatButton label="Login" style={styles.link} /></Link>
-                <Link to="/register"><FlatButton label="Register" style={styles.link} /></Link>
+                <NavLink to="/login" ><FlatButton label="Login" style={styles.link} /></NavLink>
+                <NavLink to="/register"><FlatButton label="Register" style={styles.link} /></NavLink>
             </div>
         );
     }
@@ -79,8 +79,8 @@ const Logged = (props) => (
             anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
             style={styles.IconMenu}
         >
-            <Link to="/myaccount"> <MenuItem primaryText="My Account" /></Link>
-            <Link to="/help"><MenuItem primaryText="Help" /></Link>
+            <NavLink to="/myaccount"> <MenuItem primaryText="My Account" /></NavLink>
+            <NavLink to="/help"><MenuItem primaryText="Help" /></NavLink>
             <MenuItem primaryText="Sign out"
                 onClick={() => {
                     props.toggleLogout();
@@ -118,7 +118,7 @@ class GTPAppBar extends Component {
             <div>
                 <AppBar
                     className="appbar"
-                    title={<span style={styles.title}><Link to="/" style={styles.link}>Group Travel Planner</Link></span>}
+                    title={<span style={styles.title}><NavLink to="/" style={styles.link}>Group Travel Planner</NavLink></span>}
                     onLeftIconButtonClick={this.props.toggleDrawer}
                     iconElementRight={this.props.isLoggedIn ? <Logged toggleLogout={this.props.logout} /> : <Login />}
                     style={styles.appBar}
