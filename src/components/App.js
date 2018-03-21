@@ -7,6 +7,7 @@ import DashBoardSection from '../sections/DashBoardSection';
 import CreateTripSection from '../sections/CreateTripSection';
 import InviteMemberSection from '../sections/InviteMemberSection';
 import GTPDrawerContainer from '../containers/GTPDrawerContainer';
+import GTPSnackbar from '../components/GTPSnackbar';
 import {
     Route,
     Redirect
@@ -42,6 +43,7 @@ class App extends Component {
                     <div className="container">
                         <GTPAppBarContainer />
                         <GTPDrawerContainer />
+                        <GTPSnackbar />
                         <div className="mainSection">
                             <Route
                                 exact path="/login"

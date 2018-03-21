@@ -34,6 +34,7 @@ export function loginWithPassword(email, password) {
             .catch(function (error) {
                 // TODO: show error message and guide user to re submit
                 console.error(error);
+                dispatch(snackbarMessage('email or password incorrect'));
             });
     }
 
@@ -56,5 +57,23 @@ export function validateJWT(token) {
     console.log('validateJWT: ' + token);
     return function (dispatch) {
         dispatch(login());
+    }
+}
+
+export const snackbarMessageOpen = {
+    type: 'SNACKBAR_OPEN'
+};
+
+export function setSnackbarMessage(message){
+    return{
+        type: 'SET_SNACKBAR_MESSAGE',
+        message: message
+    }
+};
+
+export function snackbarMessage(message) {
+    return function (dispatch) {
+        dispatch(snackbarMessageOpen);
+        dispatch(setSnackbarMessage(message));
     }
 }

@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import axios from 'axios';
 import settings from '../config';
 import { connect } from 'react-redux';
-import { loginWithToken, loginWithPassword } from '../actions';
+import { loginWithPassword } from '../actions';
 import { withRouter } from 'react-router-dom';
 
 const styles = {
