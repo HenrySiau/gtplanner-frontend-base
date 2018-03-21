@@ -4,7 +4,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import axios from 'axios';
 import settings from '../config';
 import { connect } from 'react-redux';
-import { login } from '../actions';
+import { loginWithToken, loginWithPassword } from '../actions';
+import { withRouter } from 'react-router-dom';
 
 const styles = {
     loginButton: {
@@ -39,26 +40,13 @@ class LoginForm extends React.Component {
     };
 
     handleSubmit = () => {
-        let { dispatch } = this.props;
+        // this.props.dispatch(loginWithPassword('a@aa.com','a', this.props.history));
+        // let { dispatch } = this.props;
         // Use updater function to make sure get the newest state
-        const history = this.props.history;
+        // let history = this.props.history;
+
         this.setState((preState) => {
-            axios.post(settings.serverUrl + '/api/post/signin', {
-                email: preState.email,
-                password: preState.password
-            })
-                .then(function (response) {
-                    // TODO: Redirect to create my first trip
-                    if (response.data.token) {
-                        localStorage.setItem('id_token', response.data.token);
-                        dispatch(login);
-                        history.push('/dashboard');
-                    }
-                })
-                .catch(function (error) {
-                    // TODO: show error message and guide user to re submit
-                    console.error(error);
-                });
+            this.props.dispatch(loginWithPassword(preState.email,preState.password, this.props.history));
         });
     }
 
@@ -95,5 +83,5 @@ class LoginForm extends React.Component {
     }
 }
 
-LoginForm = connect()(LoginForm);
+LoginForm = withRouter(connect()(LoginForm));
 export default LoginForm

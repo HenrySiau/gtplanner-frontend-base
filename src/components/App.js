@@ -8,7 +8,6 @@ import CreateTripSection from '../sections/CreateTripSection';
 import InviteMemberSection from '../sections/InviteMemberSection';
 import GTPDrawerContainer from '../containers/GTPDrawerContainer';
 import {
-    BrowserRouter as Router,
     Route,
     Redirect
 } from 'react-router-dom';
@@ -39,7 +38,6 @@ class App extends Component {
 
     render() {
         return (
-            <Router >
                 <MuiThemeProvider>
                     <div className="container">
                         <GTPAppBarContainer />
@@ -59,7 +57,6 @@ class App extends Component {
                         </div>
                     </div>
                 </MuiThemeProvider>
-            </Router>
         );
     }
 }

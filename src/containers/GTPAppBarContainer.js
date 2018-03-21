@@ -1,6 +1,7 @@
 import {connect} from 'react-redux';
 import {login, logout, toggleDrawer, validateJWT} from '../actions';
 import GTPAppBar from '../components/GTPAppBar';
+import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state) => {
     return{
@@ -25,9 +26,9 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-const GTPAppBarContainer = connect(
+const GTPAppBarContainer = withRouter(connect(
     mapStateToProps,
     mapDispatchToProps
-)(GTPAppBar)
+)(GTPAppBar))
 
 export default GTPAppBarContainer;

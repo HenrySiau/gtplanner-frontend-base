@@ -1,6 +1,7 @@
 import {connect} from 'react-redux';
 import {toggleDrawer} from '../actions';
 import GTPDrawer from '../components/GTPDrawer';
+import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state) => {
     return{
@@ -16,9 +17,9 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-const GTPDrawerContainer = connect(
+const GTPDrawerContainer = withRouter(connect(
     mapStateToProps,
     mapDispatchToProps
-)(GTPDrawer)
+)(GTPDrawer))
 
 export default GTPDrawerContainer;
