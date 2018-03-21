@@ -15,7 +15,7 @@ export function loginWithToken(id_token) {
     }
 };
 
-export function loginWithPassword(email, password, history) {
+export function loginWithPassword(email, password) {
     return function (dispatch) {
 
         axios.post(settings.serverUrl + '/api/post/signin', {

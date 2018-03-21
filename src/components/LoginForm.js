@@ -40,13 +40,8 @@ class LoginForm extends React.Component {
     };
 
     handleSubmit = () => {
-        // this.props.dispatch(loginWithPassword('a@aa.com','a', this.props.history));
-        // let { dispatch } = this.props;
-        // Use updater function to make sure get the newest state
-        // let history = this.props.history;
-
         this.setState((preState) => {
-            this.props.dispatch(loginWithPassword(preState.email,preState.password, this.props.history));
+            this.props.dispatch(loginWithPassword(preState.email,preState.password));
         });
     }
 
