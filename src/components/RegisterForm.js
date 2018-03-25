@@ -8,7 +8,7 @@ import settings from '../config';
 import validator from './Validator';
 import Dialog from 'material-ui/Dialog';
 import { connect } from 'react-redux';
-import {login} from '../actions'
+import { login } from '../actions'
 
 const styles = {
     psdCnfErrStyle: {
@@ -68,22 +68,36 @@ class RegisterForm extends React.Component {
         };
     }
 
-    ValidateEmailFormat(email) {
-        if (validator.emailFormatOK(email)) {
+    validateEmail = () => {
+        if (validator.emailFormatOK(this.state.email)) {
             this.setState({
                 emailErrMessage: '',
                 isEmailFormatIncorrect: false
             });
+            let that = this;
+            axios.post(settings.serverUrl + '/api/post/email/exist', {
+                email: this.state.email,
+            })
+                .then(function (response) {
+                    if (response.data.exist) {
+                        that.setState({
+                            emailErrMessage: 'This Email already registered',
+                        });
+                    }
+                })
+                .catch(function (error) {
+                    // TODO: show error message and guide user to re submit
+                    console.log(error);
+                    console.log(error.response);
+                });
+
+
         } else {
             this.setState({
                 emailErrMessage: 'Email format incorrect',
                 isEmailFormatIncorrect: true
             });
         }
-    };
-
-    checkEmailFormat = (event) => {
-        this.ValidateEmailFormat(this.state.email);
     }
 
     ValidateEmailAvailable(email) {
@@ -324,7 +338,7 @@ class RegisterForm extends React.Component {
                     floatingLabelText="Email"
                     errorText={this.state.emailErrMessage}
                     onChange={this.handleEmailChange}
-                    onBlur={this.checkEmailFormat}
+                    onBlur={this.validateEmail}
                 /><br />
                 <TextField
                     hintText="Phone Number"
@@ -384,7 +398,7 @@ class RegisterForm extends React.Component {
                     modal={true}
                     open={this.state.isDialogOpen}
                 >
-                Your account had successfully set up, please choose your next step.
+                    Your account had successfully set up, please choose your next step.
         </Dialog>
             </div>
         );
