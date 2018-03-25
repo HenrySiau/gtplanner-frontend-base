@@ -1,17 +1,18 @@
 import axios from 'axios';
 import settings from '../config';
 import { push } from 'react-router-redux';
+import actionTypes from './actionTypes';
 
 export function login() {
     return {
-        type: 'LOG_IN'
+        type: actionTypes.LOG_IN
     }
 };
 
 export function loginWithToken(id_token) {
     localStorage.setItem('id_token', id_token);
     return {
-        type: 'LOG_IN'
+        type: actionTypes.LOG_IN
     }
 };
 

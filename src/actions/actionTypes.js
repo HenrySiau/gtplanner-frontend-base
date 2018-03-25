@@ -1,0 +1,10 @@
+
+const actionTypes = {
+LOG_OUT: 'LOG_OUT',
+TOGGLE_DRAWER: 'TOGGLE_DRAWER',
+SNACKBAR_OPEN: 'SNACKBAR_OPEN',
+SET_SNACKBAR_MESSAGE: 'SET_SNACKBAR_MESSAGE',
+LOG_IN: 'LOG_IN'
+}
+
+export default actionTypes
