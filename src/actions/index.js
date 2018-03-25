@@ -1,18 +1,18 @@
 import axios from 'axios';
 import settings from '../config';
 import { push } from 'react-router-redux';
-import actionTypes from './actionTypes';
+import {LOG_IN, LOG_OUT, TOGGLE_DRAWER, SNACKBAR_OPEN, SET_SNACKBAR_MESSAGE} from './actionTypes';
 
 export function login() {
     return {
-        type: actionTypes.LOG_IN
+        type: LOG_IN
     }
 };
 
 export function loginWithToken(id_token) {
     localStorage.setItem('id_token', id_token);
     return {
-        type: actionTypes.LOG_IN
+        type: LOG_IN
     }
 };
 
@@ -38,19 +38,18 @@ export function loginWithPassword(email, password) {
                 dispatch(snackbarMessage('email or password incorrect'));
             });
     }
-
 };
 
 
 export function logout() {
     localStorage.removeItem('id_token');
     return {
-        type: 'LOG_OUT'
+        type: LOG_OUT
     }
 };
 
 export const toggleDrawer = {
-    type: 'TOGGLE_DRAWER'
+    type: TOGGLE_DRAWER
 };
 
 export function validateJWT(token) {
@@ -62,12 +61,12 @@ export function validateJWT(token) {
 }
 
 export const snackbarMessageOpen = {
-    type: 'SNACKBAR_OPEN'
+    type: SNACKBAR_OPEN
 };
 
 export function setSnackbarMessage(message){
     return{
-        type: 'SET_SNACKBAR_MESSAGE',
+        type: SET_SNACKBAR_MESSAGE,
         message: message
     }
 };

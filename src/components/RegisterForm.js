@@ -38,7 +38,6 @@ const styles = {
         margin: 10,
         fontSize: '80%'
     },
-
 };
 
 
@@ -122,7 +121,6 @@ class RegisterForm extends React.Component {
         this.setState({
             userName: event.target.value,
         });
-
         if (this.state.isUserNameFormatIncorrect) {
 
             if (event.target.value.length < 21 && event.target.value.length > 1) {
