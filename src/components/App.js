@@ -6,6 +6,7 @@ import RegisterSection from '../sections/RegisterSection';
 import DashBoardSection from '../sections/DashBoardSection';
 import CreateTripSection from '../sections/CreateTripSection';
 import InviteMemberSection from '../sections/InviteMemberSection';
+import WelcomeSection from '../sections/WelcomeSection';
 import GTPDrawerContainer from '../containers/GTPDrawerContainer';
 import GTPSnackbar from '../components/GTPSnackbar';
 import {
@@ -53,6 +54,7 @@ class App extends Component {
                             <Route exact path="/register"
                                 render={(props) => (<RegisterSection {...props} />)}
                             />
+                            <Route exact path="/" component={WelcomeSection} />
                             <PrivateRoute exact path="/dashboard" component={DashBoardSection} />
                             <PrivateRoute exact path="/trip/new" component={CreateTripSection} />
                             <PrivateRoute exact path="/member/invite/:code" component={InviteMemberSection} />

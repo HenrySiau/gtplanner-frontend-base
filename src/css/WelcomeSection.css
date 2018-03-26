@@ -1,0 +1,15 @@
+.WelcomeSection {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.InviteCodeForm{
+    margin: 10px;
+}
+
+.image{
+    margin: 30px;
+    width: 350px;
+    height: 350px;
+}
