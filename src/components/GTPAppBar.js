@@ -104,21 +104,30 @@ const Logged = (props) => (
     </div>
 );
 
+const TitleWithTripName = (props) => (
+    <span style={styles.title}><NavLink to="/" style={styles.link}>{props.tripName}</NavLink></span>
+);
+
+const TitleWithoutTripName = (props) => (
+    <span style={styles.title}><NavLink to="/" style={styles.link}>Grout Travel Planner</NavLink></span>
+);
 
 class GTPAppBar extends Component {
     constructor(props) {
         super(props);
-        if(localStorage.getItem('id_token')){
+    }
+    componentDidMount() {
+        if (localStorage.getItem('id_token')) {
             this.props.validateJWT(localStorage.getItem('id_token'));
+            this.props.updateSelectedTrip(null); //fetch default trip info
         }
-
     }
     render() {
         return (
             <div>
                 <AppBar
                     className="appbar"
-                    title={<span style={styles.title}><NavLink to="/" style={styles.link}>Group Travel Planner</NavLink></span>}
+                    title={this.props.selectedTrip.tripName? <TitleWithTripName tripName={this.props.selectedTrip.tripName}/> : <TitleWithoutTripName />}
                     onLeftIconButtonClick={this.props.toggleDrawer}
                     iconElementRight={this.props.isLoggedIn ? <Logged toggleLogout={this.props.logout} /> : <Login />}
                     style={styles.appBar}

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import settings from '../config';
 import { push } from 'react-router-redux';
-import {LOG_IN, LOG_OUT, TOGGLE_DRAWER, SNACKBAR_OPEN, SET_SNACKBAR_MESSAGE, UPDATE_SELECTED_TRIP} from './actionTypes';
+import { LOG_IN, LOG_OUT, TOGGLE_DRAWER, SNACKBAR_OPEN, SET_SNACKBAR_MESSAGE, UPDATE_SELECTED_TRIP } from './actionTypes';
 
 export function loginWithToken(id_token) {
     localStorage.setItem('id_token', id_token);
@@ -21,10 +21,9 @@ export function loginWithPassword(email, password) {
                 // TODO: Redirect to create my first trip
                 let id_token = response.data.token;
                 if (id_token) {
-                    // localStorage.setItem('id_token', id_token);
                     dispatch(loginWithToken(id_token));
-                    dispatch(push('dashboard'));
-                    
+                    dispatch(updateSelectedTrip(null));
+                    dispatch(push('/dashboard'));
                 }
             })
             .catch(function (error) {
@@ -36,8 +35,8 @@ export function loginWithPassword(email, password) {
 };
 
 export function updateSelectedTrip(tripId) {
-    if(!localStorage.getItem){
-        return function(dispatch){
+    if (!localStorage.getItem) {
+        return function (dispatch) {
             dispatch(snackbarMessage('Please Login First'));
             dispatch(logout);
         }
@@ -52,11 +51,14 @@ export function updateSelectedTrip(tripId) {
             },
             params: {
                 tripId: tripId
-              }
+            }
         })
             .then(function (response) {
                 // TODO: Redirect to create my first trip
-                console.log(response.data);
+                if (response.data.tripInfo) {
+                    let tripInfo = response.data.tripInfo;
+                    dispatch(updateSelectedTripWithInfo(tripInfo));
+                }
             })
             .catch(function (error) {
                 // TODO: show error message and guide user to re submit
@@ -65,6 +67,14 @@ export function updateSelectedTrip(tripId) {
     }
 };
 
+export function updateSelectedTripWithInfo(tripInfo) {
+    return {
+        type: UPDATE_SELECTED_TRIP,
+        tripId: tripInfo.tripId,
+        tripName: tripInfo.tripName,
+        members: tripInfo.members
+    }
+}
 export function logout() {
     localStorage.removeItem('id_token');
     return {
@@ -88,8 +98,8 @@ export const snackbarMessageOpen = {
     type: SNACKBAR_OPEN
 };
 
-export function setSnackbarMessage(message){
-    return{
+export function setSnackbarMessage(message) {
+    return {
         type: SET_SNACKBAR_MESSAGE,
         message: message
     }
