@@ -8,7 +8,7 @@ import settings from '../config';
 import validator from './Validator';
 import Dialog from 'material-ui/Dialog';
 import { connect } from 'react-redux';
-import { login } from '../actions'
+import { loginWithToken } from '../actions'
 
 const styles = {
     psdCnfErrStyle: {
@@ -260,8 +260,7 @@ class RegisterForm extends React.Component {
             })
                 .then(function (response) {
                     if (response.data.token) {
-                        localStorage.setItem('id_token', response.data.token);
-                        dispatch(login);
+                        dispatch(loginWithToken(response.data.token));
                         handleDialogOpen();
                     }
                 })
