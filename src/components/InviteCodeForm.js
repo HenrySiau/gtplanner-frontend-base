@@ -9,6 +9,7 @@ import { Redirect } from 'react-router';
 import Subheader from 'material-ui/Subheader';
 import Dialog from 'material-ui/Dialog';
 import { push } from 'react-router-redux';
+import {setInviteCode} from '../actions';
 
 const styles = {
     loginButton: {
@@ -74,6 +75,7 @@ class InviteCodeForm extends React.Component {
                         tripName: response.data.tripName,
                         inviteCodeErrMessage: ''
                     });
+                    that.props.setInviteCode(that.state.inviteCode);
                 } else {
                     that.setState({
                         inviteCodeErrMessage: 'Invalid invitation code'
@@ -143,6 +145,9 @@ const mapDispatchToProps = dispatch => {
     return {
         push: (path) => {
             dispatch(push(path));
+        },
+        setInviteCode: (inviteCode) =>{
+            dispatch(setInviteCode(inviteCode));
         }
     }
 }

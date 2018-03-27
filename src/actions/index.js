@@ -2,6 +2,7 @@ import axios from 'axios';
 import settings from '../config';
 import { push } from 'react-router-redux';
 import { LOG_IN, LOG_OUT, TOGGLE_DRAWER, SNACKBAR_OPEN, SET_SNACKBAR_MESSAGE, UPDATE_SELECTED_TRIP } from './actionTypes';
+import { SET_INVITE_CODE, REMOVE_INVITE_CODE} from './actionTypes';
 
 export function loginWithToken(id_token) {
     localStorage.setItem('id_token', id_token);
@@ -109,5 +110,18 @@ export function snackbarMessage(message) {
     return function (dispatch) {
         dispatch(snackbarMessageOpen);
         dispatch(setSnackbarMessage(message));
+    }
+}
+
+export function setInviteCode(inviteCode) {
+    return {
+        type: SET_INVITE_CODE,
+        inviteCode: inviteCode
+    }
+}
+
+export function removeInviteCode() {
+    return {
+        type: REMOVE_INVITE_CODE
     }
 }
