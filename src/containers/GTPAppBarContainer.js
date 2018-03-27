@@ -2,6 +2,7 @@ import {connect} from 'react-redux';
 import {logout, toggleDrawer, validateJWT, updateSelectedTrip} from '../actions';
 import GTPAppBar from '../components/GTPAppBar';
 import { withRouter } from 'react-router-dom';
+import { push } from 'react-router-redux';
 
 const mapStateToProps = (state) => {
     return{
@@ -12,6 +13,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        push: (url) => {
+            dispatch(push(url));
+        },
         logout: () => {
             dispatch(logout);
         },

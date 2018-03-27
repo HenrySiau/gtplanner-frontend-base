@@ -83,8 +83,8 @@ const Logged = (props) => (
             anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
             style={styles.IconMenu}
         >
-            <MenuItem> <NavLink to="/myaccount" style={styles.MenuItem}> My Account </NavLink></MenuItem>
-            <MenuItem> <NavLink to="/help" style={styles.MenuItem}> Help </NavLink></MenuItem>
+            <MenuItem primaryText="My Account" onClick={() => { props.push('/myaccount') }} />
+            <MenuItem primaryText="Help" onClick={() => { props.push('/help') }} />
             <MenuItem primaryText="Sign out"
                 onClick={() => {
                     props.toggleLogout();
@@ -99,10 +99,10 @@ const Logged = (props) => (
             targetOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
         >
-            <MenuItem> <NavLink to="/event/new" style={styles.MenuItem}> New Event </NavLink></MenuItem>
-            <MenuItem> <NavLink to="/members/invite" style={styles.MenuItem}> Invite </NavLink></MenuItem>
-            <MenuItem> <NavLink to="/trip/new" style={styles.MenuItem}> Create a new trip</NavLink></MenuItem>
-            <MenuItem> <NavLink to="/settings" style={styles.MenuItem}> Settings </NavLink></MenuItem>
+            <MenuItem primaryText="New Event" onClick={() => { props.push('/event/new') }} />
+            <MenuItem primaryText="Invite" onClick={() => { props.push('/members/invite') }} />
+            <MenuItem primaryText="Create a new trip" onClick={() => { props.push('/trip/new') }} />
+            <MenuItem primaryText="Settings" onClick={() => { props.push('/settings') }} />
         </IconMenu>
     </div>
 );
@@ -136,7 +136,7 @@ class GTPAppBar extends Component {
                     className="appbar"
                     title={this.props.selectedTrip.tripName ? <TitleWithTripName tripName={this.props.selectedTrip.tripName} /> : <TitleWithoutTripName />}
                     onLeftIconButtonClick={this.props.toggleDrawer}
-                    iconElementRight={this.props.isLoggedIn ? <Logged toggleLogout={this.props.logout} /> : <Login />}
+                    iconElementRight={this.props.isLoggedIn ? <Logged toggleLogout={this.props.logout} push={this.props.push} /> : <Login />}
                     style={styles.appBar}
                 />
             </div>
