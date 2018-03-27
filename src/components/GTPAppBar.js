@@ -26,8 +26,8 @@ const styles = {
         height: '20'
     },
     link: {
-        link: 'text-decoration: none',
-        color: 'white'
+        color: 'white',
+        margin: '6px 0 0 0'
     },
     appBar: {
         height: 70
@@ -36,6 +36,10 @@ const styles = {
         margin: '0 10px 0 0',
         padding: 0,
         height: 10
+    },
+    MenuItem: {
+        link: 'text-decoration: none',
+        color: 'black'
     }
 };
 
@@ -79,8 +83,8 @@ const Logged = (props) => (
             anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
             style={styles.IconMenu}
         >
-            <NavLink to="/myaccount"> <MenuItem primaryText="My Account" /></NavLink>
-            <NavLink to="/help"><MenuItem primaryText="Help" /></NavLink>
+            <MenuItem> <NavLink to="/myaccount" style={styles.MenuItem}> My Account </NavLink></MenuItem>
+            <MenuItem> <NavLink to="/help" style={styles.MenuItem}> Help </NavLink></MenuItem>
             <MenuItem primaryText="Sign out"
                 onClick={() => {
                     props.toggleLogout();
@@ -89,17 +93,16 @@ const Logged = (props) => (
         </IconMenu>
 
         <IconMenu
-            iconButtonElement={<IconButton tooltip="More Actions">
+            iconButtonElement={<IconButton tooltip="More Actions" touch={true}>
                 <Subject hoverColor={greenA200} color={grey800} />
             </IconButton>}
             targetOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
-
         >
-            <MenuItem primaryText="New Event" />
-            <MenuItem primaryText="Invites" />
-            <MenuItem primaryText="Create a new trip" />
-            <MenuItem primaryText="Settings" />
+            <MenuItem> <NavLink to="/event/new" style={styles.MenuItem}> New Event </NavLink></MenuItem>
+            <MenuItem> <NavLink to="/members/invite" style={styles.MenuItem}> Invite </NavLink></MenuItem>
+            <MenuItem> <NavLink to="/trip/new" style={styles.MenuItem}> Create a new trip</NavLink></MenuItem>
+            <MenuItem> <NavLink to="/settings" style={styles.MenuItem}> Settings </NavLink></MenuItem>
         </IconMenu>
     </div>
 );
@@ -117,7 +120,11 @@ class GTPAppBar extends Component {
         super(props);
     }
     componentDidMount() {
+        // do not need to check if user already login because this function will
+        // invoke immediately each time user use our app
+        // if user has an id_token
         if (localStorage.getItem('id_token')) {
+            // wil login if id_token is valid
             this.props.validateJWT(localStorage.getItem('id_token'));
             this.props.updateSelectedTrip(null); //fetch default trip info
         }
@@ -127,7 +134,7 @@ class GTPAppBar extends Component {
             <div>
                 <AppBar
                     className="appbar"
-                    title={this.props.selectedTrip.tripName? <TitleWithTripName tripName={this.props.selectedTrip.tripName}/> : <TitleWithoutTripName />}
+                    title={this.props.selectedTrip.tripName ? <TitleWithTripName tripName={this.props.selectedTrip.tripName} /> : <TitleWithoutTripName />}
                     onLeftIconButtonClick={this.props.toggleDrawer}
                     iconElementRight={this.props.isLoggedIn ? <Logged toggleLogout={this.props.logout} /> : <Login />}
                     style={styles.appBar}
