@@ -40,9 +40,7 @@ class LoginForm extends React.Component {
     };
 
     handleSubmit = () => {
-        this.setState((preState) => {
-            this.props.dispatch(loginWithPassword(preState.email,preState.password));
-        });
+        this.props.dispatch(loginWithPassword(this.state.email, this.state.password, this.props.inviteCode));
     }
 
     handlePressEnter = (e) => {
@@ -78,5 +76,11 @@ class LoginForm extends React.Component {
     }
 }
 
-LoginForm = withRouter(connect()(LoginForm));
+const mapStateToProps = (state) => {
+    return {
+        inviteCode: state.inviteCode
+    }
+}
+
+LoginForm = connect(mapStateToProps)(LoginForm);
 export default LoginForm

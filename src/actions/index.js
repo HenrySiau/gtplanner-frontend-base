@@ -11,15 +11,20 @@ export function loginWithToken(id_token) {
     }
 };
 
-export function loginWithPassword(email, password) {
+export function loginWithPassword(email, password, inviteCode) {
     return function (dispatch) {
 
         axios.post(settings.serverUrl + '/api/post/signin', {
             email: email,
-            password: password
+            password: password,
+            inviteCode: inviteCode
         })
             .then(function (response) {
-                // TODO: Redirect to create my first trip
+                // if receive trip info
+              if(response.data.tripInfo){
+                  // update trip info to redux store
+                  dispatch(updateSelectedTripWithInfo(response.data.tripInfo));
+              }
                 let id_token = response.data.token;
                 if (id_token) {
                     dispatch(loginWithToken(id_token));
