@@ -4,6 +4,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
 import axios from 'axios';
 import settings from '../config';
+import {connect} from 'react-redux';
+import { Redirect } from 'react-router';
+import Subheader from 'material-ui/Subheader';
 
 // is user logged in?
 // does user has an active trip? 
@@ -19,11 +22,13 @@ const styles = {
         clear: 'both'
     },
     floatingLabelStyle: {
-
     },
+    subHeader:{
+        fontSize: 18
+    }
 };
 
-export default class InviteCodeForm extends React.Component {
+class InviteCodeForm extends React.Component {
     constructor(props) {
         super(props);
 
@@ -33,8 +38,9 @@ export default class InviteCodeForm extends React.Component {
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-componentWillMount = ()=>{
+componentDidMount = ()=>{
     // if user has active trip at home page will direct to dashboard
+
 }
 
     // toggleLogin = this.props.toggleLogin; 
@@ -82,7 +88,10 @@ componentWillMount = ()=>{
     render() {
         return (
             <div>
-                <h4>Have an invitation code? </h4>
+                {/* if user already logged in and have a trip info in redux store */}
+                {/* redirect to /dashboard page */}
+                {this.props.selectedTripId && <Redirect to="/dashboard"/>}
+                <Subheader style={styles.subHeader}>Have an invitation code? </Subheader>
                 <TextField
                     hintText="Invitation Code"
                     floatingLabelText="Invitation Code"
@@ -101,3 +110,15 @@ componentWillMount = ()=>{
     }
 }
 
+const mapStateToProps = (state) => {
+    return{
+        selectedTripId: state.selectedTrip.tripId,
+        isLoggedIn: state.isLoggedIn
+    }
+}
+
+InviteCodeForm = connect(
+    mapStateToProps
+)(InviteCodeForm)
+
+export default InviteCodeForm;
