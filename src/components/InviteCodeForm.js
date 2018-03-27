@@ -4,14 +4,11 @@ import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
 import axios from 'axios';
 import settings from '../config';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import Subheader from 'material-ui/Subheader';
-
-// is user logged in?
-// does user has an active trip? 
-// if user does not has active trip at /dashboard will redirect to home page
-// if user has active trip at home page will direct to dashboard
+import Dialog from 'material-ui/Dialog';
+import { push } from 'react-router-redux';
 
 const styles = {
     loginButton: {
@@ -23,9 +20,12 @@ const styles = {
     },
     floatingLabelStyle: {
     },
-    subHeader:{
+    subHeader: {
         fontSize: 18
-    }
+    },
+    dialogButton: {
+        margin: '5px 10px 5px 10px'
+    },
 };
 
 class InviteCodeForm extends React.Component {
@@ -34,16 +34,12 @@ class InviteCodeForm extends React.Component {
 
         this.state = {
             inviteCode: '',
-            isDialogOpen: false
+            isDialogOpen: false,
+            inviteCodeErrMessage: '',
+            tripName: ''
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-componentDidMount = ()=>{
-    // if user has active trip at home page will direct to dashboard
-
-}
-
-    // toggleLogin = this.props.toggleLogin; 
 
     handleInviteCodeChange = (event) => {
         this.setState({
@@ -56,69 +52,104 @@ componentDidMount = ()=>{
             this.handleSubmit();
         }
     }
-   
-    handleSubmit = () => {
-        this.setState((preState) => {
-            axios({
-                method: 'POST',
-                url: settings.serverUrl + '/api/post/invite/code/verify',
-                json: true,
 
-                data: {
-                    inviteCode: this.state.inviteCode,
+    handleSubmit = () => {
+        const that = this;
+        // Verify invitation code
+        axios({
+            method: 'POST',
+            url: settings.serverUrl + '/api/post/invite/code/verify',
+            json: true,
+
+            data: {
+                inviteCode: this.state.inviteCode,
+            }
+        })
+            .then(function (response) {
+                // TODO: Redirect to create my first trip
+                console.log(response.data);
+                if (response.data.success) {
+                    that.setState({
+                        isDialogOpen: true,
+                        tripName: response.data.tripName,
+                        inviteCodeErrMessage: ''
+                    });
+                } else {
+                    that.setState({
+                        inviteCodeErrMessage: 'Invalid invitation code'
+                    });
                 }
             })
-                .then(function (response) {
-                    // TODO: Redirect to create my first trip
-                    console.log(response.data);
-                    if (response.data.success) {
-                        this.setState({
-                            isDialogOpen: true
-                        });
-                    }
-                })
-                .catch(function (error) {
-                    // TODO: show error message and guide user to re submit
-                    console.error(error);
-                });
-        });
+            .catch(function (error) {
+                // TODO: show error message and guide user to re submit
+                console.error(error);
+            });
     }
 
-
     render() {
+        const dialogActions = [
+            <RaisedButton
+                label="Login"
+                primary={true}
+                onClick={() => { this.props.push('/login') }}
+                style={styles.dialogButton}
+            />,
+            <RaisedButton
+                label="Register"
+                primary={true}
+                onClick={() => { this.props.push('/register') }}
+                style={styles.dialogButton}
+            />,
+        ];
+
         return (
             <div>
                 {/* if user already logged in and have a trip info in redux store */}
                 {/* redirect to /dashboard page */}
-                {this.props.selectedTripId && <Redirect to="/dashboard"/>}
+                {this.props.selectedTripId && <Redirect to="/dashboard" />}
                 <Subheader style={styles.subHeader}>Have an invitation code? </Subheader>
                 <TextField
                     hintText="Invitation Code"
                     floatingLabelText="Invitation Code"
+                    errorText={this.state.inviteCodeErrMessage}
                     onChange={this.handleInviteCodeChange}
                     onKeyPress={this.handlePressEnter}
                 /><br />
-               
                 <RaisedButton
                     label="Join"
                     primary={true}
                     onClick={this.handleSubmit}
                     style={styles.loginButton}
                 />
+                <Dialog
+                    title={"Welcome to " + this.state.tripName}
+                    actions={dialogActions}
+                    modal={true}
+                    open={this.state.isDialogOpen}
+                >
+                </Dialog>
             </div>
         );
     }
 }
 
 const mapStateToProps = (state) => {
-    return{
+    return {
         selectedTripId: state.selectedTrip.tripId,
         isLoggedIn: state.isLoggedIn
     }
 }
+const mapDispatchToProps = dispatch => {
+    return {
+        push: (path) => {
+            dispatch(push(path));
+        }
+    }
+}
 
 InviteCodeForm = connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(InviteCodeForm)
 
 export default InviteCodeForm;
