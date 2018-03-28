@@ -57,7 +57,7 @@ class App extends Component {
                             <Route exact path="/" component={WelcomeSection} />
                             <PrivateRoute exact path="/dashboard" component={DashBoardSection} />
                             <PrivateRoute exact path="/trip/new" component={CreateTripSection} />
-                            <PrivateRoute exact path="/member/invite/:code" component={InviteMemberSection} />
+                            <PrivateRoute exact path="/members/invite" component={InviteMemberSection} />
                         </div>
                     </div>
                 </MuiThemeProvider>

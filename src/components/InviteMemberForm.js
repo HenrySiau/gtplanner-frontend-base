@@ -6,6 +6,9 @@ import axios from 'axios';
 import settings from '../config';
 import validator from './Validator';
 import Dialog from 'material-ui/Dialog';
+import { connect } from 'react-redux';
+import { snackbarMessage } from '../actions';
+import { push } from 'react-router-redux';
 
 const styles = {
     loginButton: {
@@ -28,7 +31,7 @@ const styles = {
     }
 };
 
-export default class InviteMemberForm extends React.Component {
+class InviteMemberForm extends React.Component {
     constructor(props) {
         super(props);
 
@@ -36,47 +39,49 @@ export default class InviteMemberForm extends React.Component {
             emailList: [],
             emailToAdd: '',
             emailErrMessage: '',
-            isDialogOpen: false,
-            newInvitationCode: ''
+            inviteCode: ''
         };
-        console.log(this.props.history);
 
         // TODO Do I need to bind all methods?
         this.handleSubmit = this.handleSubmit.bind(this);
-
         const toggleDialogOpen = this.toggleDialogOpen;
-
-        axios({
-            method: 'POST',
-            url: settings.serverUrl + '/api/post/invite/code/verify',
-            json: true,
-            headers: {
-                'x-access-token': localStorage.getItem('id_token'),
-            },
-            data: {
-                code: this.props.match.params.code
-            }
-        })
-            .then(function (response) {
-                // TODO: Redirect to create my first trip
-                console.log(response.data);
-                // if (response.data.inviteCode) {
-                //     history.push('/member/invite/' + response.data.inviteCode);
-                // }
-            })
-            .catch(function (error) {
-                // TODO: show error message and guide user to re submit
-                toggleDialogOpen();
-            });
     }
 
+    componentDidMount = () => {
 
+        let tripId = this.props.tripId;
+        if (tripId) {
+            // get invite code with JWS and tripId
+            const that = this;
+            axios({
+                method: 'GET',
+                url: settings.serverUrl + '/api/get/invitecode',
+                json: true,
+                headers: {
+                    'x-access-token': localStorage.getItem('id_token'),
+                },
+                params: {
+                    tripId: tripId
+                }
+            })
+                .then(function (response) {
+                    console.log(response.data);
+                    if (response.data.inviteCode) {
+                        that.setState({
+                            inviteCode: response.data.inviteCode
+                        });
+                    }
+                })
+                .catch(function (error) {
+                    that.props.snackbarMessage('Some went wrong');
 
-    handleNewInvitationCodeChange = (event) => {
-        this.setState({
-            newInvitationCode: event.target.value
-        });
-    };
+                });
+        } else {
+            this.props.snackbarMessage('You don not have a trip yet');
+            this.props.push('/trip/new');
+        }
+
+    }
 
     handleEmailChange = (event) => {
         this.setState({
@@ -111,6 +116,34 @@ export default class InviteMemberForm extends React.Component {
     }
 
     handleSubmit = () => {
+        if (this.state.inviteCode) {
+            const that = this;
+            let numberOfEmails = this.state.emailList.length;
+            axios({
+                method: 'POST',
+                url: settings.serverUrl + '/api/post/members/invite',
+                json: true,
+                headers: {
+                    'x-access-token': localStorage.getItem('id_token'),
+                },
+                data: {
+                    inviteCode: this.state.inviteCode,
+                    emailList: this.state.emailList
+                }
+            })
+                .then(function (response) {
+                    if (response.data.success) {
+                        console.log(response.data);
+                        that.props.snackbarMessage('You had successfully invited ' + numberOfEmails + ' members');
+                        that.props.push('/dashboard')
+                    }else{
+                        that.props.snackbarMessage('something went wrong please try again');
+                    }
+                })
+                .catch(function (error) {
+                    that.props.snackbarMessage('Some went wrong...');
+                });
+        }
 
     }
 
@@ -142,68 +175,10 @@ export default class InviteMemberForm extends React.Component {
         }
     }
 
-    handleNewCodePressEnter = (e) => {
-        if (e.key === 'Enter') {
-            this.onSubmitNewCode();
-        }
-    }
-
-    onSubmitNewCode = () => {
-        this.props.history.push('/member/invite/' + this.state.newInvitationCode);
-        let toggleDialogClose = this.toggleDialogClose;
-        axios({
-            method: 'POST',
-            url: settings.serverUrl + '/api/post/invite/code/verify',
-            json: true,
-            headers: {
-                'x-access-token': localStorage.getItem('id_token'),
-            },
-            data: {
-                code: this.state.newInvitationCode
-            }
-        })
-            .then(function (response) {
-                toggleDialogClose();
-            })
-            .catch(function (error) {
-                // TODO: show error message and guide user to re submit
-            });
-    }
-
-    onClickGoTOHomePage = () => {
-        this.props.history.push('/');
-    }
-
-    toggleDialogOpen = () => {
-        this.setState({
-            isDialogOpen: true
-        });
-    }
-
-    toggleDialogClose = () => {
-        this.setState({
-            isDialogOpen: false
-        });
-    }
     render() {
-        const dialogActions = [
-            <RaisedButton
-                label="Use New Code"
-                primary={true}
-                onClick={this.onSubmitNewCode}
-                style={styles.dialogButton}
-            />,
-            <RaisedButton
-                label="Go to home page"
-                primary={true}
-                onClick={this.onClickGoTOHomePage}
-                style={styles.dialogButton}
-            />,
-        ];
-
         return (
             <div>
-                {this.state.emailList.length > 0 ?
+                {this.state.emailList.length > 0 &&
                     <div>
                         <div style={styles.wrapper}>
                             {this.state.emailList.map(this.renderChip, this)}
@@ -213,11 +188,11 @@ export default class InviteMemberForm extends React.Component {
                             primary={true}
                             onClick={this.handleSubmit}
                             style={styles.loginButton}
-                        /> </div> : <div></div>
+                        /> </div>
                 }
                 <br />
                 {/* {tripName? <p>Trip Name: {tripName}</p> : <div></div>} */}
-                <p>Invitation Code: {this.props.match.params.code}</p>
+                <p>Invitation Code: {this.state.inviteCode}</p>
                 <TextField
                     hintText="Email"
                     floatingLabelText="Email"
@@ -232,23 +207,27 @@ export default class InviteMemberForm extends React.Component {
                     onClick={this.handleAddEmail}
                     style={styles.loginButton}
                 />
-                <Dialog
-                    title="Incorrect or expired invitation code"
-                    actions={dialogActions}
-                    modal={true}
-                    open={this.state.isDialogOpen}
-                >
-                    please double check and re-submit your invitation code.
-                    <br />
-                    <TextField
-                        hintText="New Code"
-                        floatingLabelText="New Code"
-                        onChange={this.handleNewInvitationCodeChange}
-                        onKeyPress={this.handleNewCodePressEnter}
-                    />
-                </Dialog>
+
             </div>
         );
     }
 }
+const mapStateToProps = (state) => {
+    return {
+        tripId: state.selectedTrip.tripId
+    }
+}
 
+const mapDispatchToProps = dispatch => {
+    return {
+        push: (url) => {
+            dispatch(push(url))
+        },
+        snackbarMessage: (message) => {
+            dispatch(snackbarMessage(message))
+        }
+    }
+}
+
+InviteMemberForm = connect(mapStateToProps, mapDispatchToProps)(InviteMemberForm);
+export default InviteMemberForm
