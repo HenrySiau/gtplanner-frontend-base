@@ -298,8 +298,8 @@ class RegisterForm extends React.Component {
         });
     }
 
-    goToDashboard = () => {
-        this.props.history.push('/dashboard');
+    goToMyAccount= () => {
+        this.props.history.push('/myaccount');
         this.setState({
             isDialogOpen: false
         });
@@ -314,9 +314,9 @@ class RegisterForm extends React.Component {
                 style={styles.dialogButton}
             />,
             <RaisedButton
-                label="Go to my dashboard"
+                label="Setup my profile"
                 primary={true}
-                onClick={this.goToDashboard}
+                onClick={this.goToMyAccount}
                 style={styles.dialogButton}
             />,
         ];
