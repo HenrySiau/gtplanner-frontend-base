@@ -102,7 +102,8 @@ const Logged = (props) => (
             <MenuItem primaryText="New Event" onClick={() => { props.push('/event/new') }} />
             <MenuItem primaryText="Invite" onClick={() => { props.push('/members/invite') }} />
             <MenuItem primaryText="Create a new trip" onClick={() => { props.push('/trip/new') }} />
-            <MenuItem primaryText="Settings" onClick={() => { props.push('/settings') }} />
+            <MenuItem primaryText="My Trips" onClick={() => { props.push('/trips') }} />
+            <MenuItem primaryText="Trip Members" onClick={() => { props.push('/trip/members') }} />
         </IconMenu>
     </div>
 );
