@@ -5,7 +5,6 @@ import axios from 'axios';
 import settings from '../config';
 import { connect } from 'react-redux';
 import { loginWithPassword } from '../actions';
-import { withRouter } from 'react-router-dom';
 
 const styles = {
     loginButton: {
@@ -23,7 +22,6 @@ class LoginForm extends React.Component {
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-
 
     // toggleLogin = this.props.toggleLogin;
 
