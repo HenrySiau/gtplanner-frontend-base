@@ -63,8 +63,13 @@ class RegisterForm extends React.Component {
             isPasswordContainCapital: false,
             isPasswordContainNumber: false,
             isPasswordSatisfyLengthRequirement: false,
-            isDialogOpen: false
+            isDialogOpen: false,
         };
+    }
+    componentDidMount = () =>{
+        this.setState({
+            anchorEl: document.querySelector('#passwordInputField')
+        });
     }
 
     validateEmail = () => {
@@ -219,8 +224,9 @@ class RegisterForm extends React.Component {
 
     showPasswordRequirements = (event) => {
         this.setState({
+            // anchorEl: event.currentTarget,
             isPopoverOpen: true,
-            anchorEl: event.currentTarget
+            
         });
     }
 
@@ -351,6 +357,7 @@ class RegisterForm extends React.Component {
                     onChange={this.handlePasswordChange}
                     onFocus={this.showPasswordRequirements}
                     onBlur={this.closePasswordRequirements}
+                    id='passwordInputField'
                 /><br />
                 <Popover
                     style={styles.popover}
@@ -358,7 +365,6 @@ class RegisterForm extends React.Component {
                     anchorEl={this.state.anchorEl}
                     anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
                     targetOrigin={{ horizontal: 'middle', vertical: 'top' }}
-                    animation={PopoverAnimationVertical}
                     onRequestClose={this.closePasswordRequirements}
                 >
                     <p style={styles.popoverTitle}>Password must contain:</p>
@@ -374,6 +380,7 @@ class RegisterForm extends React.Component {
                     </ul>
                     <p style={styles.popoverHint}>Click anywhere to close this window</p>
                 </Popover>
+                <br />
                 <TextField
                     hintText="Confirm Password"
                     floatingLabelText="Confirm Password"
