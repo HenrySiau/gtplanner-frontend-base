@@ -1,25 +1,43 @@
-import {connect} from 'react-redux';
-import {toggleDrawer} from '../actions';
+import { connect } from 'react-redux';
+import { toggleDrawer, updateSelectedTrip } from '../actions';
 import GTPDrawer from '../components/GTPDrawer';
-import { withRouter } from 'react-router-dom';
+
+const trips = [
+    {
+        tripName: 'Trip One',
+        tripId: '123'
+    },
+    {
+        tripName: 'Trip two',
+        tripId: '124'
+    },
+    {
+        tripName: 'Trip three',
+        tripId: '125'
+    },
+]
 
 const mapStateToProps = (state) => {
-    return{
-        isDrawerOpen: state.isDrawerOpen
+    return {
+        isDrawerOpen: state.isDrawerOpen,
+        trips: trips
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         toggleDrawer: () => {
-            dispatch(toggleDrawer)
+            dispatch(toggleDrawer);
+        },
+        updateSelectedTrip: (tripId) => {
+            dispatch(updateSelectedTrip(tripId));
         }
     }
 }
 
-const GTPDrawerContainer = withRouter(connect(
+const GTPDrawerContainer = connect(
     mapStateToProps,
     mapDispatchToProps
-)(GTPDrawer))
+)(GTPDrawer)
 
 export default GTPDrawerContainer;
