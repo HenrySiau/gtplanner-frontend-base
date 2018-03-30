@@ -10,6 +10,7 @@ import Dialog from 'material-ui/Dialog';
 import { connect } from 'react-redux';
 import { loginWithToken } from '../actions';
 import { push } from 'react-router-redux';
+import { snackbarMessage } from '../actions';
 
 const styles = {
     psdCnfErrStyle: {
@@ -75,6 +76,16 @@ class RegisterForm extends React.Component {
 
     strip(str) {
         return str.replace(/^\s+|\s+$/g, '');
+    }
+    isFormReady = () => {
+        if(!this.state.isEmailFormatIncorrect && !this.state.isUserNameFormatIncorrect
+            && this.state.isPasswordContainLowercase && this.state.isPasswordContainCapital
+            && this.state.isPasswordContainNumber && this.state.isPasswordSatisfyLengthRequirement
+        ){
+            return true
+        }else {
+            return false
+        }
     }
 
     ValidateEmailAvailable = () => {
@@ -148,7 +159,7 @@ class RegisterForm extends React.Component {
             if (event.target.value.length > 21) {
                 this.setState({
                     userNameErrMessage: 'User Name must be shorter than 20 characters and longer than 1 characters',
-                    isUserNameFormatIncorrect: true
+                    isUserNameFormatIncorrect: true,
                 });
             }
         }
@@ -158,10 +169,11 @@ class RegisterForm extends React.Component {
         this.setState({
             email: event.target.value
         });
-        if (!this.state.isEmailFormatIncorrect) {
+        if (this.state.isEmailFormatIncorrect) {
             if (this.ValidateEmailFormat(event.target.value)) {
                 this.setState({
-                    isEmailFormatIncorrect: true
+                    isEmailFormatIncorrect: false,
+                    emailErrMessage: ''
                 });
             }
         }
@@ -265,31 +277,33 @@ class RegisterForm extends React.Component {
     };
 
     handleSubmit = () => {
-        const history = this.props.history;
-        let { dispatch } = this.props;
-        const handleDialogOpen = this.handleDialogOpen;
-        // Use updater function to make sure get the newest state
-        this.setState((preState) => {
-            axios.post(settings.serverUrl + '/api/post/register', {
-                userName: preState.userName,
-                email: preState.email,
-                phoneNumber: preState.phoneNumber,
-                password: preState.password,
-                passwordConfirm: preState.passwordConfirm
-
-            })
-                .then(function (response) {
-                    if (response.data.token) {
-                        dispatch(loginWithToken(response.data.token));
-                        handleDialogOpen();
-                    }
+        if(this.isFormReady()){
+            let { dispatch } = this.props;
+            const handleDialogOpen = this.handleDialogOpen;
+            // Use updater function to make sure get the newest state
+            this.setState((preState) => {
+                axios.post(settings.serverUrl + '/api/post/register', {
+                    userName: preState.userName,
+                    email: preState.email,
+                    phoneNumber: preState.phoneNumber,
+                    password: preState.password,
+                    passwordConfirm: preState.passwordConfirm
+    
                 })
-                .catch(function (error) {
-                    // TODO: show error message and guide user to re submit
-                    console.log(error);
-                    console.log(error.response);
-                });
-        });
+                    .then(function (response) {
+                        if (response.data.token) {
+                            dispatch(loginWithToken(response.data.token));
+                            handleDialogOpen();
+                        }
+                    })
+                    .catch(function (error) {
+                        this.props.dispatch(snackbarMessage('Something went wrong, can not register, please try later'));
+                    });
+            });
+        }else{
+            this.props.dispatch(snackbarMessage('Please fill the form properly'));
+        }
+
 
     }
 
