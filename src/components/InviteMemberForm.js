@@ -50,6 +50,7 @@ class InviteMemberForm extends React.Component {
     componentDidMount = () => {
 
         let tripId = this.props.tripId;
+        console.log('tripId: ' + tripId);
         if (tripId) {
             // get invite code with JWS and tripId
             const that = this;
@@ -181,7 +182,7 @@ class InviteMemberForm extends React.Component {
                 {this.state.emailList.length > 0 &&
                     <div>
                         <div style={styles.wrapper}>
-                            {this.state.emailList.map(this.renderChip, this)}
+                            {this.state.emailList && this.state.emailList.map(this.renderChip, this)}
                         </div>
                         <RaisedButton
                             label="Invite"
