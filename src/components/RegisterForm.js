@@ -8,7 +8,8 @@ import settings from '../config';
 import validator from './Validator';
 import Dialog from 'material-ui/Dialog';
 import { connect } from 'react-redux';
-import { loginWithToken } from '../actions'
+import { loginWithToken } from '../actions';
+import { push } from 'react-router-redux';
 
 const styles = {
     psdCnfErrStyle: {
@@ -66,21 +67,26 @@ class RegisterForm extends React.Component {
             isDialogOpen: false,
         };
     }
-    componentDidMount = () =>{
+    componentDidMount = () => {
         this.setState({
             anchorEl: document.querySelector('#passwordInputField')
         });
     }
 
-    validateEmail = () => {
-        if (validator.emailFormatOK(this.state.email)) {
+    strip(str) {
+        return str.replace(/^\s+|\s+$/g, '');
+    }
+
+    ValidateEmailAvailable = () => {
+        let email = this.strip(this.state.email);
+        if (validator.emailFormatOK(email)) {
             this.setState({
                 emailErrMessage: '',
                 isEmailFormatIncorrect: false
             });
             let that = this;
             axios.post(settings.serverUrl + '/api/post/email/exist', {
-                email: this.state.email,
+                email: email,
             })
                 .then(function (response) {
                     if (response.data.exist) {
@@ -104,8 +110,12 @@ class RegisterForm extends React.Component {
         }
     }
 
-    ValidateEmailAvailable(email) {
-        //TODO check with server if Email is already been used.
+    ValidateEmailFormat = (email) => {
+        if (validator.emailFormatOK(this.strip(email))) {
+            return true
+        } else {
+            return false
+        }
     }
 
     ValidateUserNameFormat = (event) => {
@@ -148,8 +158,12 @@ class RegisterForm extends React.Component {
         this.setState({
             email: event.target.value
         });
-        if (this.state.isEmailFormatIncorrect) {
-            this.ValidateEmailFormat(event.target.value);
+        if (!this.state.isEmailFormatIncorrect) {
+            if (this.ValidateEmailFormat(event.target.value)) {
+                this.setState({
+                    isEmailFormatIncorrect: true
+                });
+            }
         }
     };
     validatePassword = () => {
@@ -226,7 +240,7 @@ class RegisterForm extends React.Component {
         this.setState({
             // anchorEl: event.currentTarget,
             isPopoverOpen: true,
-            
+
         });
     }
 
@@ -298,14 +312,14 @@ class RegisterForm extends React.Component {
     }
 
     createNewTrip = () => {
-        this.props.history.push('/trip/new');
+        this.props.dispatch(push('/trip/new'));
         this.setState({
             isDialogOpen: false
         });
     }
 
-    goToMyAccount= () => {
-        this.props.history.push('/myaccount');
+    goToMyAccount = () => {
+        this.props.dispatch(push('/myaccount'));
         this.setState({
             isDialogOpen: false
         });
@@ -341,7 +355,7 @@ class RegisterForm extends React.Component {
                     floatingLabelText="Email"
                     errorText={this.state.emailErrMessage}
                     onChange={this.handleEmailChange}
-                    onBlur={this.validateEmail}
+                    onBlur={this.ValidateEmailAvailable}
                 /><br />
                 <TextField
                     hintText="Phone Number"
