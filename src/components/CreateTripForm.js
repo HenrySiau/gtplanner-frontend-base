@@ -4,6 +4,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
 import axios from 'axios';
 import settings from '../config';
+import { connect } from 'react-redux';
+import { snackbarMessage, updateSelectedTripWithInfo } from '../actions';
+import { push } from 'react-router-redux';
 
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('id_token');
 
@@ -20,7 +23,7 @@ const styles = {
     },
 };
 
-export default class CreateTripForm extends React.Component {
+class CreateTripForm extends React.Component {
     constructor(props) {
         super(props);
 
@@ -56,8 +59,7 @@ export default class CreateTripForm extends React.Component {
     }
     handleSubmit = () => {
         console.log(this.state);
-
-        const history = this.props.history;
+        const that = this;
         this.setState((preState) => {
             axios({
                 method: 'POST',
@@ -77,8 +79,9 @@ export default class CreateTripForm extends React.Component {
                 .then(function (response) {
                     // TODO: Redirect to create my first trip
                     console.log(response.data);
-                    if (response.data.inviteCode) {
-                        history.push('/member/invite/' + response.data.inviteCode);
+                    if (response.data.tripInfo) {
+                        that.props.dispatch(updateSelectedTripWithInfo(response.data.tripInfo));
+                        that.props.dispatch(push('/members/invite/'));
                     }
                 })
                 .catch(function (error) {
@@ -153,3 +156,22 @@ export default class CreateTripForm extends React.Component {
     }
 }
 
+// const mapStateToProps = (state) => {
+//     return {
+//         tripId: state.selectedTrip.tripId
+//     }
+// }
+
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         push: (url) => {
+//             dispatch(push(url))
+//         },
+//         snackbarMessage: (message) => {
+//             dispatch(snackbarMessage(message))
+//         }
+//     }
+// }
+
+CreateTripForm = connect()(CreateTripForm);
+export default CreateTripForm

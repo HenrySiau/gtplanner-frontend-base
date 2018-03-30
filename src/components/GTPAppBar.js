@@ -39,7 +39,13 @@ const styles = {
     },
     MenuItem: {
         link: 'text-decoration: none',
-        color: 'black'
+        color: 'black',
+        margin: '0'
+    },
+
+    TitleWithTripNameTrip: {
+        fontSize: '19px',
+        color: 'white'
     }
 };
 
@@ -109,7 +115,7 @@ const Logged = (props) => (
 );
 
 const TitleWithTripName = (props) => (
-    <span style={styles.title}><NavLink to="/" style={styles.link}>{props.tripName}</NavLink></span>
+    <NavLink to="/" style={styles.TitleWithTripNameTrip}>{props.tripName}</NavLink>
 );
 
 const TitleWithoutTripName = (props) => (
