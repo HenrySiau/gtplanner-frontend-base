@@ -15,6 +15,7 @@ class GTPDrawer extends React.Component {
     key={trip.tripId}
     onClick={()=>{
       this.props.updateSelectedTrip(trip.tripId);
+      this.props.toggleDrawer();
     }}
     >{trip.tripName}</MenuItem>
   )
@@ -36,7 +37,7 @@ class GTPDrawer extends React.Component {
         />
         <Subheader>Most Recent Trips</Subheader>
         <Menu>
-          {this.props.trips.map(this.renderTrips, this)}
+          {this.props.recentTrips && this.props.recentTrips.map(this.renderTrips, this)}
         </Menu>
     
       </Drawer>
