@@ -129,7 +129,8 @@ class RegisterForm extends React.Component {
     }
 
     ValidateUserNameFormat = (event) => {
-        if (this.state.userName.length < 2 || this.state.userName.length > 21) {
+        const userName = this.strip(this.state.userName);
+        if (userName.length < 2 || userName.length > 21) {
             this.setState({
                 isUserNameFormatIncorrect: true,
                 userNameErrMessage: 'User Name must be shorter than 20 characters and longer than 1 characters'
@@ -196,12 +197,13 @@ class RegisterForm extends React.Component {
     };
 
     handlePasswordChange = (event) => {
+        const password = this.strip(event.target.value);
         this.setState({
-            password: event.target.value
+            password: password
         });
 
         // validate lowercase
-        if (event.target.value.match(/[a-z]/g)) {
+        if (password.match(/[a-z]/g)) {
             this.setState(
                 { isPasswordContainLowercase: true },
                 () => this.validatePassword()
@@ -212,7 +214,7 @@ class RegisterForm extends React.Component {
             });
         }
         // validate capital letter
-        if (event.target.value.match(/[A-Z]/g)) {
+        if (password.match(/[A-Z]/g)) {
             this.setState(
                 { isPasswordContainCapital: true },
                 () => this.validatePassword()
@@ -224,7 +226,7 @@ class RegisterForm extends React.Component {
             );
         }
         // validate number
-        if (event.target.value.match(/[0-9]/g)) {
+        if (password.match(/[0-9]/g)) {
             this.setState(
                 { isPasswordContainNumber: true },
                 () => this.validatePassword()
@@ -235,7 +237,7 @@ class RegisterForm extends React.Component {
             });
         }
         //validate length
-        if (event.target.value.length > 7 && event.target.value.length < 31) {
+        if (password.length > 7 && password.length < 31) {
             this.setState(
                 { isPasswordSatisfyLengthRequirement: true },
                 () => this.validatePassword()
