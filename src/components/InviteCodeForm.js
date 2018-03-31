@@ -39,7 +39,6 @@ class InviteCodeForm extends React.Component {
             inviteCodeErrMessage: '',
             tripName: ''
         };
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleInviteCodeChange = (event) => {
@@ -55,7 +54,6 @@ class InviteCodeForm extends React.Component {
     }
 
     handleSubmit = () => {
-        const that = this;
         // Verify invitation code
         axios({
             method: 'POST',
@@ -66,23 +64,23 @@ class InviteCodeForm extends React.Component {
                 inviteCode: this.state.inviteCode,
             }
         })
-            .then(function (response) {
+            .then( (response) => {
                 // TODO: Redirect to create my first trip
                 console.log(response.data);
                 if (response.data.success) {
-                    that.setState({
+                    this.setState({
                         isDialogOpen: true,
                         tripName: response.data.tripName,
                         inviteCodeErrMessage: ''
                     });
-                    that.props.setInviteCode(that.state.inviteCode);
+                    this.props.setInviteCode(this.state.inviteCode);
                 } else {
-                    that.setState({
+                    this.setState({
                         inviteCodeErrMessage: 'Invalid invitation code'
                     });
                 }
             })
-            .catch(function (error) {
+            .catch( (error) => {
                 // TODO: show error message and guide user to re submit
                 console.error(error);
             });

@@ -1,26 +1,14 @@
+// import React from 'react';
 import { connect } from 'react-redux';
 import { toggleDrawer, updateSelectedTrip } from '../actions';
 import GTPDrawer from '../components/GTPDrawer';
-
-const trips = [
-    {
-        tripName: 'Trip One',
-        tripId: '123'
-    },
-    {
-        tripName: 'Trip two',
-        tripId: '124'
-    },
-    {
-        tripName: 'Trip three',
-        tripId: '125'
-    },
-]
+import axios from 'axios';
+import settings from '../config';
 
 const mapStateToProps = (state) => {
     return {
         isDrawerOpen: state.isDrawerOpen,
-        trips: trips
+        recentTrips: state.recentTrips
     }
 }
 

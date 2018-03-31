@@ -41,9 +41,6 @@ class InviteMemberForm extends React.Component {
             emailErrMessage: '',
             inviteCode: ''
         };
-
-        // TODO Do I need to bind all methods?
-        this.handleSubmit = this.handleSubmit.bind(this);
         const toggleDialogOpen = this.toggleDialogOpen;
     }
 
@@ -53,7 +50,6 @@ class InviteMemberForm extends React.Component {
         console.log('tripId: ' + tripId);
         if (tripId) {
             // get invite code with JWS and tripId
-            const that = this;
             axios({
                 method: 'GET',
                 url: settings.serverUrl + '/api/get/invitecode',
@@ -65,16 +61,16 @@ class InviteMemberForm extends React.Component {
                     tripId: tripId
                 }
             })
-                .then(function (response) {
+                .then( (response) => {
                     console.log(response.data);
                     if (response.data.inviteCode) {
-                        that.setState({
+                        this.setState({
                             inviteCode: response.data.inviteCode
                         });
                     }
                 })
-                .catch(function (error) {
-                    that.props.snackbarMessage('Some went wrong');
+                .catch( (error) => {
+                    this.props.snackbarMessage('Some went wrong');
 
                 });
         } else {
@@ -118,7 +114,6 @@ class InviteMemberForm extends React.Component {
 
     handleSubmit = () => {
         if (this.state.inviteCode) {
-            const that = this;
             let numberOfEmails = this.state.emailList.length;
             axios({
                 method: 'POST',
@@ -132,17 +127,17 @@ class InviteMemberForm extends React.Component {
                     emailList: this.state.emailList
                 }
             })
-                .then(function (response) {
+                .then( (response) => {
                     if (response.data.success) {
                         console.log(response.data);
-                        that.props.snackbarMessage('You had successfully invited ' + numberOfEmails + ' members');
-                        that.props.push('/dashboard')
+                        this.props.snackbarMessage('You had successfully invited ' + numberOfEmails + ' members');
+                        this.props.push('/dashboard')
                     }else{
-                        that.props.snackbarMessage('something went wrong please try again');
+                        this.props.snackbarMessage('something went wrong please try again');
                     }
                 })
-                .catch(function (error) {
-                    that.props.snackbarMessage('Some went wrong...');
+                .catch( (error) =>{
+                    this.props.snackbarMessage('Some went wrong...');
                 });
         }
 

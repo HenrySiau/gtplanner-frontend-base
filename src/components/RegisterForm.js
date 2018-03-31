@@ -78,12 +78,12 @@ class RegisterForm extends React.Component {
         return str.replace(/^\s+|\s+$/g, '');
     }
     isFormReady = () => {
-        if(!this.state.isEmailFormatIncorrect && !this.state.isUserNameFormatIncorrect
+        if (!this.state.isEmailFormatIncorrect && !this.state.isUserNameFormatIncorrect
             && this.state.isPasswordContainLowercase && this.state.isPasswordContainCapital
             && this.state.isPasswordContainNumber && this.state.isPasswordSatisfyLengthRequirement
-        ){
+        ) {
             return true
-        }else {
+        } else {
             return false
         }
     }
@@ -95,18 +95,17 @@ class RegisterForm extends React.Component {
                 emailErrMessage: '',
                 isEmailFormatIncorrect: false
             });
-            let that = this;
             axios.post(settings.serverUrl + '/api/post/email/exist', {
                 email: email,
             })
-                .then(function (response) {
+                .then((response) => {
                     if (response.data.exist) {
-                        that.setState({
+                        this.setState({
                             emailErrMessage: 'This Email already registered',
                         });
                     }
                 })
-                .catch(function (error) {
+                .catch((error) => {
                     // TODO: show error message and guide user to re submit
                     console.log(error);
                     console.log(error.response);
@@ -277,9 +276,7 @@ class RegisterForm extends React.Component {
     };
 
     handleSubmit = () => {
-        if(this.isFormReady()){
-            let { dispatch } = this.props;
-            const handleDialogOpen = this.handleDialogOpen;
+        if (this.isFormReady()) {
             // Use updater function to make sure get the newest state
             this.setState((preState) => {
                 axios.post(settings.serverUrl + '/api/post/register', {
@@ -288,19 +285,19 @@ class RegisterForm extends React.Component {
                     phoneNumber: preState.phoneNumber,
                     password: preState.password,
                     passwordConfirm: preState.passwordConfirm
-    
+
                 })
-                    .then(function (response) {
+                    .then((response) => {
                         if (response.data.token) {
-                            dispatch(loginWithToken(response.data.token));
-                            handleDialogOpen();
+                            this.props.dispatch(loginWithToken(response.data.token));
+                            this.handleDialogOpen();
                         }
                     })
-                    .catch(function (error) {
+                    .catch((error) => {
                         this.props.dispatch(snackbarMessage('Something went wrong, can not register, please try later'));
                     });
             });
-        }else{
+        } else {
             this.props.dispatch(snackbarMessage('Please fill the form properly'));
         }
 

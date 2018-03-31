@@ -20,7 +20,6 @@ class LoginForm extends React.Component {
             email: '',
             password: ''
         };
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     // toggleLogin = this.props.toggleLogin;

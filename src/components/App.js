@@ -48,11 +48,11 @@ class App extends Component {
                         <div className="mainSection">
                             <Route
                                 exact path="/login"
-                                render={(props) => (<LoginSection {...props}
+                                render={(props) => (<LoginSection
                                 />)}
                             />
                             <Route exact path="/register"
-                                render={(props) => (<RegisterSection {...props} />)}
+                                render={(props) => (<RegisterSection />)}
                             />
                             <Route exact path="/" component={WelcomeSection} />
                             <PrivateRoute exact path="/dashboard" component={DashBoardSection} />

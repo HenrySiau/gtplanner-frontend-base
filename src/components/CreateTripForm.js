@@ -42,6 +42,7 @@ class CreateTripForm extends React.Component {
     // toggleLogin = this.props.toggleLogin;
 
     handleTripNameChange = (event) => {
+        // TODO: validator length requirement: 
         this.setState({
             tripName: event.target.value
         });
@@ -59,7 +60,6 @@ class CreateTripForm extends React.Component {
     }
     handleSubmit = () => {
         console.log(this.state);
-        const that = this;
         this.setState((preState) => {
             axios({
                 method: 'POST',
@@ -76,15 +76,15 @@ class CreateTripForm extends React.Component {
                     endDate: preState.endDate
                 }
             })
-                .then(function (response) {
+                .then((response) => {
                     // TODO: Redirect to create my first trip
                     console.log(response.data);
                     if (response.data.tripInfo) {
-                        that.props.dispatch(updateSelectedTripWithInfo(response.data.tripInfo));
-                        that.props.dispatch(push('/members/invite/'));
+                        this.props.dispatch(updateSelectedTripWithInfo(response.data.tripInfo));
+                        this.props.dispatch(push('/members/invite/'));
                     }
                 })
-                .catch(function (error) {
+                .catch((error) => {
                     // TODO: show error message and guide user to re submit
                     console.error(error);
                 });
