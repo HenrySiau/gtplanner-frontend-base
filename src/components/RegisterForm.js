@@ -74,7 +74,7 @@ class RegisterForm extends React.Component {
         });
     }
 
-    strip(str) {
+    strip = (str) =>{
         return str.replace(/^\s+|\s+$/g, '');
     }
     isFormReady = () => {
