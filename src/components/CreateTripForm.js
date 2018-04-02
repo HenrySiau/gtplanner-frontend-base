@@ -29,7 +29,6 @@ class CreateTripForm extends React.Component {
 
         this.state = {
             tripName: '',
-            destination: '',
             description: '',
             startDate: '',
             endDate: ''
@@ -47,11 +46,6 @@ class CreateTripForm extends React.Component {
             tripName: event.target.value
         });
     };
-    handleDestinationChange = (event) => {
-        this.setState({
-            destination: event.target.value
-        });
-    };
 
     handleDescriptionChange = (event) => {
         this.setState({
@@ -59,7 +53,6 @@ class CreateTripForm extends React.Component {
         });
     }
     handleSubmit = () => {
-        console.log(this.state);
         this.setState((preState) => {
             axios({
                 method: 'POST',
@@ -70,7 +63,6 @@ class CreateTripForm extends React.Component {
                 },
                 data: {
                     tripName: preState.tripName,
-                    destination: preState.destination,
                     description: preState.description,
                     startDate: preState.startDate,
                     endDate: preState.endDate
@@ -116,12 +108,6 @@ class CreateTripForm extends React.Component {
                     floatingLabelStyle={styles.errorStyle}
                     onChange={this.handleTripNameChange}
 
-                /><br />
-                <TextField
-                    hintText="Destination"
-                    floatingLabelText="Destination"
-                    onChange={this.handleDestinationChange}
-                    hintStyle={styles.hintStyle}
                 /><br />
                 <DatePicker
                     onChange={this.handleChangeStartDate}

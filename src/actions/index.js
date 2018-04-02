@@ -73,8 +73,13 @@ export const updateSelectedTripWithInfo = (tripInfo) => (
     {
         type: UPDATE_SELECTED_TRIP,
         tripId: tripInfo.tripId,
-        tripName: tripInfo.tripName,
-        members: tripInfo.members
+        title: tripInfo.title,
+        description: tripInfo.description,
+        owner: tripInfo.owner,
+        members: tripInfo.members,
+        startDate: tripInfo.startDate,
+        endDate: tripInfo.endDate,
+        invitationCode: tripInfo.invitationCode
     }
 )
 export function logout() {

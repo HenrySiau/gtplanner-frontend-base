@@ -141,7 +141,7 @@ class GTPAppBar extends Component {
             <div>
                 <AppBar
                     className="appbar"
-                    title={this.props.selectedTrip.tripName ? <TitleWithTripName tripName={this.props.selectedTrip.tripName} /> : <TitleWithoutTripName />}
+                    title={this.props.selectedTrip.title ? <TitleWithTripName tripName={this.props.selectedTrip.title} /> : <TitleWithoutTripName />}
                     onLeftIconButtonClick={this.props.toggleDrawer}
                     iconElementRight={this.props.isLoggedIn ? <Logged toggleLogout={this.props.logout} push={this.props.push} /> : <Login />}
                     style={styles.appBar}
