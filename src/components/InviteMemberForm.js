@@ -35,7 +35,9 @@ class InviteMemberForm extends React.Component {
         this.state = {
             emailList: [],
             emailToAdd: '',
-            emailErrMessage: ''
+            emailErrMessage: '',
+            message: '',
+            subject: ''
         };
         const toggleDialogOpen = this.toggleDialogOpen;
     }
@@ -53,6 +55,17 @@ class InviteMemberForm extends React.Component {
         }
     };
 
+    handleMessageChange = (event) => {
+        this.setState({
+            message: event.target.value
+        });
+    }
+
+    handleSubjectChange = (event) => {
+        this.setState({
+            subject: event.target.value
+        });
+    }
 
     handleRequestDelete = (email) => {
         this.emailList = this.state.emailList;
@@ -74,7 +87,6 @@ class InviteMemberForm extends React.Component {
 
     handleSubmit = () => {
         if (this.props.invitationCode) {
-            let numberOfEmails = this.state.emailList.length;
             axios({
                 method: 'POST',
                 url: settings.serverUrl + '/api/post/members/invite',
@@ -83,8 +95,11 @@ class InviteMemberForm extends React.Component {
                     'x-access-token': localStorage.getItem('id_token'),
                 },
                 data: {
-                    invitationCode: this.state.invitationCode,
-                    emailList: this.state.emailList
+                    invitationCode: this.props.invitationCode,
+                    tripId: this.props.tripId,
+                    emailList: this.state.emailList,
+                    message: this.state.message,
+                    subject: this.state.subject
                 }
             })
                 .then((response) => {
@@ -148,21 +163,9 @@ class InviteMemberForm extends React.Component {
         ];
         return (
             <div>
-                {this.state.emailList.length > 0 &&
-                    <div>
-                        <div style={styles.wrapper}>
-                            {this.state.emailList && this.state.emailList.map(this.renderChip, this)}
-                        </div>
-                        <RaisedButton
-                            label="Invite"
-                            primary={true}
-                            onClick={this.handleSubmit}
-                            style={styles.loginButton}
-                        /> </div>
-                }
-                <br />
+                
                 {/* {tripName? <p>Trip Name: {tripName}</p> : <div></div>} */}
-                <p>Invitation Code: {this.props.invitationCode && this.props.invitationCode}</p>
+                {/* <p>Invitation Code: {this.props.invitationCode && this.props.invitationCode}</p> */}
                 <TextField
                     hintText="Email"
                     floatingLabelText="Email"
@@ -176,11 +179,36 @@ class InviteMemberForm extends React.Component {
                     primary={true}
                     onClick={this.handleAddEmail}
                     style={styles.loginButton}
-                />
+                /><br />
+                <TextField
+                    hintText="Subject"
+                    floatingLabelText="Subject"
+                    onChange={this.handleSubjectChange}
+                /><br />
+                <TextField
+                    hintText="Message"
+                    floatingLabelText="Message"
+                    multiLine={true}
+                    rows={2}
+                    onChange={this.handleMessageChange}
+                /><br />
+                {this.state.emailList.length > 0 &&
+                    <div>
+                        <div style={styles.wrapper}>
+                            {this.state.emailList && this.state.emailList.map(this.renderChip, this)}
+                        </div>
+                        <RaisedButton
+                            label="Invite"
+                            primary={true}
+                            onClick={this.handleSubmit}
+                            style={styles.loginButton}
+                        /> </div>
+                }
+                
                 <Dialog
                     title="You don't have a trip yet"
                     actions={dialogActions}
-                    open={this.props.invitationCode? false : true}
+                    open={this.props.invitationCode ? false : true}
                 >
                     please choose your next step.
         </Dialog>
@@ -191,7 +219,9 @@ class InviteMemberForm extends React.Component {
 }
 const mapStateToProps = (state) => {
     return {
-        invitationCode: state.selectedTrip.invitationCode
+        invitationCode: state.selectedTrip.invitationCode,
+        tripId: state.selectedTrip.tripId,
+
     }
 }
 
