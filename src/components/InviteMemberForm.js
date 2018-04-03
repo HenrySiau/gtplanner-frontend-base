@@ -25,9 +25,6 @@ const styles = {
     },
     dialogButton: {
         margin: '5px 10px 5px 10px'
-    },
-    inputNewCode: {
-        margin: '5px 10px 5px 30px'
     }
 };
 
@@ -38,46 +35,9 @@ class InviteMemberForm extends React.Component {
         this.state = {
             emailList: [],
             emailToAdd: '',
-            emailErrMessage: '',
-            inviteCode: ''
+            emailErrMessage: ''
         };
         const toggleDialogOpen = this.toggleDialogOpen;
-    }
-
-    componentDidMount = () => {
-
-        let tripId = this.props.tripId;
-        console.log('tripId: ' + tripId);
-        if (tripId) {
-            // get invite code with JWS and tripId
-            axios({
-                method: 'GET',
-                url: settings.serverUrl + '/api/get/invitecode',
-                json: true,
-                headers: {
-                    'x-access-token': localStorage.getItem('id_token'),
-                },
-                params: {
-                    tripId: tripId
-                }
-            })
-                .then( (response) => {
-                    console.log(response.data);
-                    if (response.data.inviteCode) {
-                        this.setState({
-                            inviteCode: response.data.inviteCode
-                        });
-                    }
-                })
-                .catch( (error) => {
-                    this.props.snackbarMessage('Some went wrong');
-
-                });
-        } else {
-            this.props.snackbarMessage('You don not have a trip yet');
-            this.props.push('/trip/new');
-        }
-
     }
 
     handleEmailChange = (event) => {
@@ -113,7 +73,7 @@ class InviteMemberForm extends React.Component {
     }
 
     handleSubmit = () => {
-        if (this.state.inviteCode) {
+        if (this.props.invitationCode) {
             let numberOfEmails = this.state.emailList.length;
             axios({
                 method: 'POST',
@@ -123,20 +83,20 @@ class InviteMemberForm extends React.Component {
                     'x-access-token': localStorage.getItem('id_token'),
                 },
                 data: {
-                    inviteCode: this.state.inviteCode,
+                    invitationCode: this.state.invitationCode,
                     emailList: this.state.emailList
                 }
             })
-                .then( (response) => {
+                .then((response) => {
                     if (response.data.success) {
                         console.log(response.data);
-                        this.props.snackbarMessage('You had successfully invited ' + numberOfEmails + ' members');
-                        this.props.push('/dashboard')
-                    }else{
+                        this.props.push('/dashboard');
+                        this.props.snackbarMessage('You had successfully invited ' + response.data.numberOfEmails + ' members');
+                    } else {
                         this.props.snackbarMessage('something went wrong please try again');
                     }
                 })
-                .catch( (error) =>{
+                .catch((error) => {
                     this.props.snackbarMessage('Some went wrong...');
                 });
         }
@@ -172,6 +132,20 @@ class InviteMemberForm extends React.Component {
     }
 
     render() {
+        const dialogActions = [
+            <RaisedButton
+                label="Create a new Trip"
+                primary={true}
+                onClick={() => { this.props.push('/trip/new') }}
+                style={styles.dialogButton}
+            />,
+            <RaisedButton
+                label="Joint a trip with invitation code"
+                primary={true}
+                onClick={() => { this.props.push('/trip/join') }}
+                style={styles.dialogButton}
+            />,
+        ];
         return (
             <div>
                 {this.state.emailList.length > 0 &&
@@ -188,7 +162,7 @@ class InviteMemberForm extends React.Component {
                 }
                 <br />
                 {/* {tripName? <p>Trip Name: {tripName}</p> : <div></div>} */}
-                <p>Invitation Code: {this.state.inviteCode}</p>
+                <p>Invitation Code: {this.props.invitationCode && this.props.invitationCode}</p>
                 <TextField
                     hintText="Email"
                     floatingLabelText="Email"
@@ -203,6 +177,13 @@ class InviteMemberForm extends React.Component {
                     onClick={this.handleAddEmail}
                     style={styles.loginButton}
                 />
+                <Dialog
+                    title="You don't have a trip yet"
+                    actions={dialogActions}
+                    open={this.props.invitationCode? false : true}
+                >
+                    please choose your next step.
+        </Dialog>
 
             </div>
         );
@@ -210,7 +191,7 @@ class InviteMemberForm extends React.Component {
 }
 const mapStateToProps = (state) => {
     return {
-        tripId: state.selectedTrip.tripId
+        invitationCode: state.selectedTrip.invitationCode
     }
 }
 
